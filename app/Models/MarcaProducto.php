@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class MarcaProducto extends Model
@@ -10,7 +11,8 @@ class MarcaProducto extends Model
 
     protected $guarded = ['idMarca'];
     
-    protected $fillable = ['nombreMarca',
+    protected $fillable = ['idMarca',
+                            'nombreMarca',
                             'imagenMarca',
                             'slugMarca'
                             ];
@@ -43,34 +45,6 @@ class MarcaProducto extends Model
     public function Producto()
     {
         return $this->hasMany(Producto::class,'idMarca','idMarca');
-    }
-    
-    public function imagenEncode(){
-        return base64_encode($this->imagenMarca);
-    }
-    
-    public function marcasFilter($listProducto,$listMarcas){
-        $marcas = array();
-        
-        foreach ($listMarcas as $marca) {
-            foreach ($listProducto as $producto) {
-                if ($producto->idMarca == $marca->idMarca) {
-                    $found = false;
-                    foreach ($marcas as $pmarca) {
-                        if ($pmarca->idMarca == $marca->idMarca) {
-                            $found = true;
-                            break;
-                        }
-                    }
-                    if (!$found) {
-                        $marcas[] = $marca;
-                    }
-                    break;
-                }
-            }
-        }
-        
-        return $marcas;
     }
     
 }

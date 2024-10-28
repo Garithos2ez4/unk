@@ -1,50 +1,61 @@
 <?php
 namespace App\Services;
 
+use App\Repositories\CalculadoraRepositoryInterface;
+use App\Repositories\CategoriaProductoRepositoryInterface;
 use Illuminate\Support\Facades\DB;
-use App\Models\Producto;
-use App\Models\CategoriaProducto;
-use App\Models\TipoProducto;
-use App\Models\MarcaProducto;
-use App\Models\Empresa;
-use App\Models\EmpresaRedSocial;
-use App\Models\RedSocial;
-use App\Models\Calculadora;
-use App\Models\registroUpdate;
+use App\Repositories\EmpresaRepositoryInterface;
+use App\Repositories\MarcaProductoRepositoryInterface;
+use App\Repositories\registroUpdateRepositoryInterface;
+use App\Repositories\TipoProductoRepositoryInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
-use DOMDocument;
-use DOMXPath;
-use Illuminate\Support\Facades\DB as Database;
+use Exception;
 
-class HeaderService
+class HeaderService implements HeaderServiceInterface
 {
+    protected $empresaRepository;
+    protected $categoriaRepository;
+    protected $marcaRepository;
+    protected $tipoRepository;
+    protected $registroRepository;
+    protected $calculadoraRepository;
+
     private static  $id = 2;
     
+    public function __construct(EmpresaRepositoryInterface $empresaRepository,
+                                CategoriaProductoRepositoryInterface $categoriaRepository,
+                                MarcaProductoRepositoryInterface $marcaRepository,
+                                TipoProductoRepositoryInterface $tipoRepository,
+                                registroUpdateRepositoryInterface $registroRepository,
+                                CalculadoraRepositoryInterface $calculadoraRepository)
+    {
+        $this->empresaRepository = $empresaRepository;
+        $this->categoriaRepository = $categoriaRepository;
+        $this->marcaRepository = $marcaRepository;
+        $this->tipoRepository = $tipoRepository;
+        $this->registroRepository = $registroRepository;
+        $this->calculadoraRepository = $calculadoraRepository;
+    }
     public function obtenerEmpresa()
     {
-        return Empresa::where('idEmpresa', self::$id)->first();
+        return $this->empresaRepository->getOne('idEmpresa',self::$id);
     }
 
     public function obtenerCategorias()
     {
-        return CategoriaProducto::select('idCategoria','slugCategoria','nombreCategoria')->get();
+        return $this->categoriaRepository->getAll();
     }
     
     public function obtenerMarcas()
     {
-        return MarcaProducto::select('idMarca','nombreMarca','imagenMarca','slugMarca')->orderBy('nombreMarca','asc')->get();
+        return $this->marcaRepository->getAll()->sortByDesc('nombreMarca'); //MarcaProducto::select('idMarca','nombreMarca','imagenMarca','slugMarca')->orderBy('nombreMarca','asc')->get();
     }
     
     public function obtenerTipo()
     {
-        return TipoProducto::select('idTipoProducto','tipoProducto','slugTipo')->get();
-    }
-    
-    public function obtenerLinkRedes(){
-        $red = DB::select('CALL sp_get_linksxempresa(?)', [self::$id]);
-        return $red;
+        return $this->tipoRepository->getAll();
     }
     
    public function getApiDolar() {
@@ -110,7 +121,7 @@ class HeaderService
         $switch = false;
         $horaActual = date("H:i:s");
         $fechaActual = now()->format('Y-m-d');
-        $lastUpdate = registroUpdate::where('columna','=','tasaCambio')->first();
+        $lastUpdate = $this->registroRepository->get();
         
         if (!empty($lastUpdate) && isset($lastUpdate->ultimaFecha)) {
             if ($lastUpdate->ultimaFecha->format('Y-m-d') != $fechaActual && $horaActual > '10:30:00') {
@@ -121,31 +132,19 @@ class HeaderService
         if($switch){
             $tc = $this->getApiDolar();
             if($tc != null){
-                $calculadora = Calculadora::where('idCalculadora', 1)->first();
-                $calculadora->tasaCambio = $tc;
+                $this->calculadoraRepository->updateTC($tc);
                 
-                $calculadora->save();
-                
-                $registro = registroUpdate::where('columna','=','tasaCambio')->first();
-                $registro->ultimaFecha = now();
-                $registro->save();
-                //$update = Database::select('CALL sp_update_tipocambio(?)',[$tc]);
+                $this->registroRepository->update();
             }else{
-                $calculadora = Calculadora::where('idCalculadora', 1)->first();
-                $calculadora->tasaCambio = $backup;
+                $this->calculadoraRepository->updateTC($backup);
                 
-                $calculadora->save();
-                
-                $registro = registroUpdate::where('columna','=','tasaCambio')->first();
-                $registro->ultimaFecha = now();
-                $registro->save();
-                //$update = Database::select('CALL sp_update_tipocambio(?)',[$backup]);
+                $this->registroRepository->update();
             }
         }
     }
     
     function obtenerCambioDolar(){
-        $calculadora = Calculadora::where('idCalculadora', 1)->first();
+        $calculadora = $this->calculadoraRepository->get();
         $this->updateTipoCambio($calculadora->tasaCambio);
         return $calculadora->tasaCambio;
     }

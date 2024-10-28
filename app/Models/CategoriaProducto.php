@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class CategoriaProducto extends Model
 {
@@ -10,7 +11,8 @@ class CategoriaProducto extends Model
 
     protected $guarded = ['idCategoria'];
     
-    protected $fillable = ['nombreCategoria',
+    protected $fillable = ['idCategoria',
+                            'nombreCategoria',
                             'slugCategoria'
                             ];
 
@@ -32,7 +34,7 @@ class CategoriaProducto extends Model
             $categoria->slugCategoria = Str::slug($categoria->nombreCategoria);
         });
 
-        static::updating(function ($producto) {
+        static::updating(function ($categoria) {
             $categoria->slugCategoria = Str::slug($categoria->nombreCategoria);
         });
     }

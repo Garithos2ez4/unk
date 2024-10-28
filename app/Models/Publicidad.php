@@ -10,10 +10,12 @@ class Publicidad extends Model
 
     protected $guarded = ['idPublicidad'];
     
-    protected $fillable = ['descripcionPublicidad',
+    protected $fillable = ['idPublicidad',
+                            'descripcionPublicidad',
                             'imagenPublicidad',
                             'tipoPublicidad',
-                            'estadoPublicidad'
+                            'estadoPublicidad',
+                            'idEmpresa'
                             ];
 
     
@@ -23,7 +25,8 @@ class Publicidad extends Model
 
     
     protected $casts = [
-        'idPublicidad' => 'int'
+        'idPublicidad' => 'int',
+        'idEmpresa' => 'int'
     ];
     
      public function Empresa()
