@@ -26,17 +26,9 @@ class HomeController extends Controller
         
         //Variables propias del controlador
         $banners = $this->homeService->getPublicidad($empresa->idEmpresa);
-        
-        // $getMonitores = DB::select('CALL sp_get_productoxgrupo(?,?)', [3,-1]);
-        // $monitores = collect(Producto::hydrate($getMonitores))->shuffle()->slice(0, 17);
-        
-        // $getLapGamer = DB::select('CALL sp_get_productoxgrupo(?,?)', [1,1]);
-        // $lapGamer = collect(Producto::hydrate($getLapGamer))->shuffle()->slice(0, 17);
-        
-        // $getImpresoras = DB::select('CALL sp_get_productoxgrupo(?,?)', [6,-1]);
-        // $impresoras = collect(Producto::hydrate($getImpresoras))->shuffle()->slice(0, 17);
-        
-        dd($banners);
+        $monitores = $this->homeService->getProductsByMonitores();
+        $lapGamer = $this->homeService->getProductsByLaptopGamers();
+        $impresoras = $this->homeService->getProductsByImpresoras();
         
         return view('home',[
                     'categorias' => $categorias,

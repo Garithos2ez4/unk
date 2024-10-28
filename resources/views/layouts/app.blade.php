@@ -99,29 +99,6 @@
                         </div>
                       </div>
                   </li>
-                  <li class="list-group-item" style="background-color:{{$empresa->colorTres}}">
-                    <a class="text-decoration-none fw-bold" style="color:{{$empresa->colorUno}}" data-bs-toggle="collapse" href="#collapseTiposOffCanva" role="button" aria-expanded="false" aria-controls="collapseTiposOffCanva">Productos</a>
-                    <div class="row">
-                      <div class="col">
-                        <div class="collapse multi-collapse" id="collapseTiposOffCanva">
-                          <ul class="list-group list-group-flush pt-1">
-                               @foreach($tipos as $tipo)
-                                    @php
-                                        // Asegúrate de que GrupoProducto es una colección y accede al primer elemento
-                                        $grupoProducto = $tipo->GrupoProducto->first();
-                                        $slugGrupo = $grupoProducto ? $grupoProducto->slugGrupo : 'Slug no disponible';
-                                    @endphp
-                                
-                                    <li class="list-group-item">
-                                        <a class="dropdown-item" href="{{ route('tipo', [$tipo->slugTipo, $slugGrupo]) }}">
-                                            {{ $tipo->tipoProducto }}
-                                        </a>
-                                    </li>
-                                @endforeach
-                          </ul>
-                        </div>
-                      </div>
-                  </li>
                   <li class="list-group-item fw-bold" style="background-color:{{$empresa->colorTres}}"><a href="{{route('mediodepago')}}" class="text-decoration-none" style="color:{{$empresa->colorUno}}">Medios de pago</a></li>
                   <li class="list-group-item fw-bold" style="background-color:{{$empresa->colorTres}}"><a href="{{route('envios')}}" class="text-decoration-none" style="color:{{$empresa->colorUno}}">Envios</a></li>
                   <li class="list-group-item fw-bold" style="background-color:{{$empresa->colorTres}}"><a href="" class="text-decoration-none" style="color:{{$empresa->colorUno}}">Blogs</a></li>
@@ -165,26 +142,6 @@
                 </li>
                 <li class="nav-item" aria-labelledby="navbarDropdownMenuLink"> 
                     <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#multiCollapseMarcas" role="button" aria-expanded="false" aria-controls="multiCollapseMarcas">Marcas</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
-                    Productos
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    @foreach($tipos as $tipo)
-                        @php
-                            // Asegúrate de que GrupoProducto es una colección y accede al primer elemento
-                            $grupoProducto = $tipo->GrupoProducto->first();
-                            $slugGrupo = $grupoProducto ? $grupoProducto->slugGrupo : 'Slug no disponible';
-                        @endphp
-                    
-                        <li>
-                            <a class="dropdown-item" href="{{ route('tipo', [$tipo->slugTipo, $slugGrupo]) }}">
-                                {{ $tipo->tipoProducto }}
-                            </a>
-                        </li>
-                    @endforeach
-                  </ul>
                 </li>
                 <li class="nav-item" aria-labelledby="navbarDropdownMenuLink"> 
                     <a class="nav-link"  href="{{route('mediodepago')}}">Medios de pago</a> 

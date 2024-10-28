@@ -13,24 +13,36 @@ class ProductoRepository implements ProductoRepositoryInterface
         // Define las columnas válidas
         $this->modelColumns = (new Producto())->getFillable();
     }
+
     public function getAll(){
         return Producto::all();
     }
+
     public function getOne($column,$data){
         $this->validateColumns($column);
         return Producto::where($column,'=',$data)->first();
     }
+
     public function getAllByColumn($column,$data){
         $this->validateColumns($column);
         return Producto::where($column,'=',$data)->get();
     }
+
     public function searchByColumn($column,$data){
         $this->validateColumns($column);
         return Producto::where($column, 'LIKE', '%' . $data . '%')->get();
     }
+
+    public function getAllByCategoria($idCategoria){
+        return Producto::join('GrupoProducto','GrupoProducto.idGrupoProducto','=','Producto.idGrupo')
+                        ->select('Producto.*')->where('GrupoProducto.idCategoria','=',$idCategoria)
+                        ->get();
+    }
+
     public function create(array $data){
         return Producto::create($data);
     }
+
     public function update($id, array $data){
         $producto = Producto::findOrFail($id);
         $producto->update($data);

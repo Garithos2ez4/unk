@@ -2,20 +2,17 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
-use App\Models\Producto;
 use App\Models\Calculadora;
 use App\Models\Comision;
-use App\Models\Empresa;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 
-use DOMDocument;
-use DOMXPath;
-use Illuminate\Support\Facades\DB as Database;
-
-class PreciosService
+class PreciosService implements PreciosServiceInterface
 {
+    protected $headerService;
+
+    public function __construct(HeaderServiceInterface $headerService)
+    {
+        $this->headerService = $headerService;
+    }
     
     public function getIgv($precio,$tipo){
         $calculadora = $this->getCalculadora();
@@ -60,8 +57,7 @@ class PreciosService
     }
     
     public function getPrecioTotal($precio,$grupo,$tipo,$estado,$ganancia){
-        $headerService = new HeaderService();
-        $empresa = $headerService->obtenerEmpresa();
+        $empresa = $this->headerService->obtenerEmpresa();
         $gananciaValidate = $this->validateMoney($ganancia,$tipo);
         $total = $this->getPrecioCalculado($precio,$grupo,$tipo,$estado) * $this->porcent($empresa->comision) + $gananciaValidate;
         return $total;

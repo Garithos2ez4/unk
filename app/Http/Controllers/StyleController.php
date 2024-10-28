@@ -3,9 +3,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\HeaderService;
+use App\Services\HeaderServiceInterface;
 
 class StyleController extends Controller
 {
+    protected $headerService;
+
+    public function __construct(HeaderServiceInterface $headerService)
+    {
+        $this->headerService = $headerService;
+    }
     public function generateStyles()
     {
         // Obtén datos de los modelos
@@ -13,8 +20,7 @@ class StyleController extends Controller
         $textColor = '#333';
         $containerWidth = '80%';
         
-        $header = new HeaderService();
-        $empresa = $header->obtenerEmpresa();
+        $empresa = $this->headerService->obtenerEmpresa();
 
         return response()->view('css.dynamic-styles', compact('backgroundColor', 'textColor', 'containerWidth','empresa'))
                          ->header('Content-Type', 'text/css');

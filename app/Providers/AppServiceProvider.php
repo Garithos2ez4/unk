@@ -22,6 +22,8 @@ use App\Services\HeaderService;
 use App\Services\HeaderServiceInterface;
 use App\Services\HomeService;
 use App\Services\HomeServiceInterface;
+use App\Services\PreciosService;
+use App\Services\PreciosServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(HeaderServiceInterface::class,HeaderService::class);
         $this->app->bind(HomeServiceInterface::class,HomeService::class);
+        $this->app->bind(PreciosServiceInterface::class,PreciosService::class);
     }
 
     /**

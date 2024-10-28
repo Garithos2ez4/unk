@@ -3,7 +3,6 @@ namespace App\Services;
 
 use App\Repositories\CalculadoraRepositoryInterface;
 use App\Repositories\CategoriaProductoRepositoryInterface;
-use Illuminate\Support\Facades\DB;
 use App\Repositories\EmpresaRepositoryInterface;
 use App\Repositories\MarcaProductoRepositoryInterface;
 use App\Repositories\registroUpdateRepositoryInterface;

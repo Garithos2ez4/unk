@@ -2,13 +2,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use App\Services\PreciosService;
+use App\Services\PreciosServiceInterface;
 
 class Producto extends Model
 {
+    private PreciosServiceInterface $preciosService;
+
     public $timestamps = false;
  
     protected $table = 'Producto';
@@ -99,14 +99,12 @@ class Producto extends Model
     }
     
     public function precioTotalDolar(){
-        $price = new PreciosService();
         
-        return number_format($price->getPrecioTotal($this->precioDolar,$this->idGrupo,'DOLAR',$this->estadoProductoWeb,$this->gananciaExtra), 1, '.', ',')."0";
+        return number_format($this->preciosService->getPrecioTotal($this->precioDolar,$this->idGrupo,'DOLAR',$this->estadoProductoWeb,$this->gananciaExtra), 1, '.', ',')."0";
     }
     
     public function precioTotalSol(){
-        $price = new PreciosService();
-        return number_format($price->getPrecioTotal($this->precioDolar,$this->idGrupo,'SOL',$this->estadoProductoWeb,$this->gananciaExtra), 1, '.', ',')."0";
+        return number_format($this->preciosService->getPrecioTotal($this->precioDolar,$this->idGrupo,'SOL',$this->estadoProductoWeb,$this->gananciaExtra), 1, '.', ',')."0";
     }
     
     public function publicImages(){
