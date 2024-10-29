@@ -1,53 +1,52 @@
-let pagSelect = 1;
-        
-function changeNumber(numPag){
-    pagSelect = numPag;
-    showPage(pagSelect);
-}
-
-function plusPage(){
-    if(pagSelect == lengthPagBtn()){
-        showPage(lengthPagBtn());
-    }else{
-        pagSelect = pagSelect + 1;
-        showPage(pagSelect);
+document.addEventListener('DOMContentLoaded', function () {
+    // Función para cargar productos usando AJAX
+    function loadProducts(url) {
+      alert(url);
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Reemplazar el contenido del contenedor de productos
+                document.querySelector('.page-content').innerHTML = data;
+                
+                // Actualizar los enlaces de paginación
+                updatePagination();
+            })
+            .catch(error => console.error('Error al cargar los productos:', error));
     }
-    
-}
 
-function minusPage(){
-    if(pagSelect == 1){
-        showPage(1);
-    }else{
-        pagSelect = pagSelect - 1;
-        showPage(pagSelect);
+    // Función para actualizar los enlaces de paginación
+    function updatePagination() {
+        const currentPageLink = document.querySelector('#current-page');
+        const currentPage = parseInt(currentPageLink.innerText) || 1;
+        currentPageLink.innerText = currentPage;
+
+        // Actualiza la URL de la página anterior
+        const prevPageLink = document.querySelector('#prev-page');
+        prevPageLink.setAttribute('href', '{{ $storage->previousPageUrl() }}');
+
+        // Actualiza la URL de la página siguiente
+        const nextPageLink = document.querySelector('#next-page');
+        nextPageLink.setAttribute('href', '{{ $storage->nextPageUrl() }}');
     }
-}
 
-function showPage(numSelect) {
-    try{
-      document.querySelectorAll('.page-content').forEach(function(page) {
-        page.style.display = 'none';
-      });
-    
-      document.getElementById('page-' + numSelect).style.display = 'block';
-      var pageItems = document.querySelectorAll('.page-item');
-      for (var i = 0; i < pageItems.length; i++) {
-        pageItems[i].classList.remove('active');
-      }
-    
-      var currentPage = document.getElementById('btnPag-' + numSelect);
-      currentPage.classList.add('active');
-    }catch(error){
-        console.error('Se produjo un error:', error.message);
-    }
-}
+    // Agregar evento para los enlaces de paginación
+    document.querySelectorAll('#pagination a.page-link').forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Evitar que el enlace recargue la página
 
-function lengthPagBtn(){
-    let cant = document.querySelectorAll('.pag-btn');
-    return cant.length;
-}
+            // Obtener la URL de la página a cargar
+            const url = this.getAttribute('href');
 
-document.addEventListener('DOMContentLoaded', function() {
-    showPage(1);
+            // Cargar productos usando AJAX
+            loadProducts(url);
+        });
+    });
+
+    // Cargar la paginación inicialmente
+    updatePagination();
 });

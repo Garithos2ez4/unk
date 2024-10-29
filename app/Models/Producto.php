@@ -3,12 +3,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use App\Services\PreciosServiceInterface;
 
 class Producto extends Model
 {
-    private PreciosServiceInterface $preciosService;
-
     public $timestamps = false;
  
     protected $table = 'Producto';
@@ -52,14 +49,14 @@ class Producto extends Model
         'idProducto' => 'int',
         'idMarca' => 'int',
         'idGrupo' => 'int',
-        'gananciaExtra' => 'float',
-        'precioDolar' => 'float',
+        'gananciaExtra' => 'decimal:2',
+        'precioDolar' => 'decimal:2',
         'stockTienda' => 'int',
         'stockColombia' => 'int',
         'stockProveedor' => 'int',
         'idProveedor' => 'int'
     ];
-    
+
     public static function boot()
     {
         parent::boot();
@@ -98,13 +95,14 @@ class Producto extends Model
         return $this->hasMany(Caracteristicas_Producto::class,'idProducto','idProducto');
     }
     
-    public function precioTotalDolar(){
-        
-        return number_format($this->preciosService->getPrecioTotal($this->precioDolar,$this->idGrupo,'DOLAR',$this->estadoProductoWeb,$this->gananciaExtra), 1, '.', ',')."0";
+    public function precioTotalDolar($preciosService)
+    {
+        return number_format($preciosService->getPrecioTotal($this->precioDolar, $this->idGrupo, 'DOLAR', $this->estadoProductoWeb, $this->gananciaExtra), 2, '.', ',');
     }
-    
-    public function precioTotalSol(){
-        return number_format($this->preciosService->getPrecioTotal($this->precioDolar,$this->idGrupo,'SOL',$this->estadoProductoWeb,$this->gananciaExtra), 1, '.', ',')."0";
+
+    public function precioTotalSol($preciosService)
+    {
+        return number_format($preciosService->getPrecioTotal($this->precioDolar, $this->idGrupo, 'SOL', $this->estadoProductoWeb, $this->gananciaExtra), 2, '.', ',');
     }
     
     public function publicImages(){

@@ -17,8 +17,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12 text-start ">
-                                  <p class="mb-0 fs-card-text"><strong style="color:{{$empres->colorDos}}">Precio:</strong> <span class="precio-label">{{$producto->precioTotalSol() == 0 ? 'Consultar' : 'S/.'.$producto->precioTotalSol()}}</span> 
-                                  <span class="fw-lighter">{{$producto->precioTotalDolar() < 1 ? '': '($'.$producto->precioTotalDolar().')'}}</span></p>
+                                  <p class="mb-0 fs-card-text"><strong style="color:{{$empres->colorDos}}">Precio:</strong> <span class="precio-label">{{$producto->precioTotalSol($preciosService) == 0 ? 'Consultar' : 'S/.'.$producto->precioTotalSol($preciosService)}}</span> 
+                                  <span class="fw-lighter">{{$producto->precioTotalDolar($preciosService) < 1 ? '': '($'.$producto->precioTotalDolar($preciosService).')'}}</span></p>
                                   <p class="mt-0 fs-card-text"><strong style="color:{{$empres->colorDos}}">Garantia:</strong> {{$producto->garantia}}</p>
                                 </div>
                             </div>

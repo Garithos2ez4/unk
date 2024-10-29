@@ -67,8 +67,8 @@ En ningún caso hacemos devolución de dinero por temas de garantía hasta haber
                 <br>
                 <li>
                     Para los tramites de productos vendidos a provincia, el cliente deberá escribirnos a nuestro 
-                    @foreach($redes as $red)
-                        @if($red->plataforma == 'Whatsapp')
+                    @foreach($empresa->EmpresaRedSocial as $red)
+                        @if($red->RedSocial->plataforma == 'Whatsapp')
                         <a class="text-success" href="{{$red->enlace}}">WhatsApp</a>
                         @break
                         @endif

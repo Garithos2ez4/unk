@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Services\HeaderService;
+use App\Services\HeaderServiceInterface;
 
 class NosotrosController extends Controller
 {
+    protected $headerService;
+
+    public function __construct(HeaderServiceInterface $headerService)
+    {
+        $this->headerService = $headerService;
+    }
     public function index(){
         //Variables para el header,nav y footer
-        $header = new HeaderService();
-        $categorias = $header->obtenerCategorias();
-        $empresa = $header->obtenerEmpresa();
-        $marcas = $header->obtenerMarcas();
-        $tipos = $header->obtenerTipo();
-        $redes = $header->obtenerLinkRedes();
-        $tipoCambio = $header->obtenerCambioDolar();
+        $categorias = $this->headerService->obtenerCategorias();
+        $empresa = $this->headerService->obtenerEmpresa();
+        $marcas = $this->headerService->obtenerMarcas();
+        $tipos = $this->headerService->obtenerTipo();
+        $tipoCambio = $this->headerService->obtenerCambioDolar();
         
         
         //Variables propias del controlador
@@ -26,7 +29,6 @@ class NosotrosController extends Controller
                     'empresa' => $empresa,
                     'marcas' => $marcas,
                     'tipos' => $tipos,
-                    'redes' => $redes,
                     'tipoCambio' => $tipoCambio,
 
 ]);

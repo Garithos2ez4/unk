@@ -21,14 +21,6 @@ class ScriptController extends Controller
         return response($js)->header('Content-Type', 'application/javascript');
     }
     
-    public function paginationScript()
-    {
-        
-        $js = view('js.pagination-scripts')->render();
-
-        return response($js)->header('Content-Type', 'application/javascript');
-    }
-    
     public function carruselMarcasScript()
     {
         

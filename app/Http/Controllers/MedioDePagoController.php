@@ -2,25 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Services\HeaderService;
-use App\Models\CuentasTransferencia;
+use App\Services\HeaderServiceInterface;
+use App\Services\MedioDePagoServiceInterface;
 
 class MedioDePagoController extends Controller
 {
+    protected $headerService;
+    protected $medioDePagoService;
+
+    public function __construct(HeaderServiceInterface $headerService,
+                                MedioDePagoServiceInterface $medioDePagoService)
+    {
+        $this->headerService = $headerService;
+        $this->medioDePagoService = $medioDePagoService;
+    }
     public function index(){
         //Variables para el header,nav y footer
-        $header = new HeaderService();
-        $categorias = $header->obtenerCategorias();
-        $empresa = $header->obtenerEmpresa();
-        $marcas = $header->obtenerMarcas();
-        $tipos = $header->obtenerTipo();
-        $redes = $header->obtenerLinkRedes();
-        $tipoCambio = $header->obtenerCambioDolar();
+        $categorias = $this->headerService->obtenerCategorias();
+        $empresa = $this->headerService->obtenerEmpresa();
+        $marcas = $this->headerService->obtenerMarcas();
+        $tipos = $this->headerService->obtenerTipo();
+        $tipoCambio = $this->headerService->obtenerCambioDolar();
         
-        $bancarias = CuentasTransferencia::where('tipoCuenta','BANCARIA')->get();
-        $inter = CuentasTransferencia::where('tipoCuenta','INTERBANCARIA')->get();
+        $bancarias = $this->medioDePagoService->getCuentasBancarias();
+        $inter = $this->medioDePagoService->getCuentasInterbancarias();
         
         //Variables propias del controlador
         
@@ -29,7 +34,6 @@ class MedioDePagoController extends Controller
                     'empresa' => $empresa,
                     'marcas' => $marcas,
                     'tipos' => $tipos,
-                    'redes' => $redes,
                     'tipoCambio' => $tipoCambio,
                     'bancarias' => $bancarias,
                     'inter' => $inter,

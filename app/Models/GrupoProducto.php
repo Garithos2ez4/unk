@@ -2,17 +2,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class GrupoProducto extends Model
 {
- 
     protected $table = 'GrupoProducto';
     
     protected $primaryKey = 'idGrupoProducto';
 
-    protected $guarded = ['idGrupoProducto','idCategoria','idTipoProducto'];
+    protected $guarded = ['idGrupoProducto'];
     
-    protected $fillable = ['nombreGrupo',
+    protected $fillable = ['idGrupoProducto',
+                            'idCategoria',
+                            'idTipoProducto',
+                            'nombreGrupo',
                             'imagenGrupo',
                             'slugGrupo',
                             ];

@@ -33,6 +33,10 @@ class ProductoRepository implements ProductoRepositoryInterface
         return Producto::where($column, 'LIKE', '%' . $data . '%')->get();
     }
 
+    public function getPaginationByColumn($column,$data,$cant){
+        return Producto::where($column,'=',$data)->paginate($cant);
+    }
+
     public function getAllByCategoria($idCategoria){
         return Producto::join('GrupoProducto','GrupoProducto.idGrupoProducto','=','Producto.idGrupo')
                         ->select('Producto.*')->where('GrupoProducto.idCategoria','=',$idCategoria)

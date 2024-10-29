@@ -12,9 +12,12 @@ class CuentasTransferencia extends Model
     
     protected $primaryKey = 'idCuentaBancaria';
 
-    protected $guarded = ['idCuentaBancaria','idBanco','idEmpresa'];
+    protected $guarded = ['idCuentaBancaria'];
     
-    protected $fillable = ['numeroCuenta',
+    protected $fillable = ['idCuentaBancaria',
+                            'idBanco',
+                            'idEmpresa',
+                            'numeroCuenta',
                             'tipoMoneda',
                             'tipoCuenta',
                             'titular'
