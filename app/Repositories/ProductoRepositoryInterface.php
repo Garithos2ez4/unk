@@ -9,6 +9,7 @@ interface ProductoRepositoryInterface {
     public function searchByColumn($column,$data);
     public function getPaginationByColumn($column,$data,$cant);
     public function getAllByCategoria($idCategoria);
+    public function getSpectsByColumn($column,$data);
     public function create(array $data);
     public function update($id, array $data);
 }

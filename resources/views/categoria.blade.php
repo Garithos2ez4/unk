@@ -18,13 +18,26 @@
             $chunks = $categoria->GrupoProducto->chunk(5);
           @endphp
           @foreach ($chunks as $index => $chunk)
-            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}  text-center">
+            @php
+              $activeCarrusel = false;
+            @endphp
+            @foreach ($chunk as $valChunk)
+              @if($valChunk->idGrupoProducto == $grupo->idGrupoProducto)
+                @php
+                  $activeCarrusel = true;
+                @endphp
+              @endif
+            @endforeach
+            <div class="carousel-item {{ $activeCarrusel == true ? 'active' : '' }}  text-center">
               <div class="row justify-content-center">
                   <div class="col-1"></div>
                 @foreach ($chunk as $grup)
                   <div class="col-2">
                      <a href="{{route('categoria', [$categoria->slugCategoria,$grup->slugGrupo])}}" class="text-decoration-none text-dark">
-                        <img src="{{asset('storage/'.$grup->imagenGrupo)}}" alt="Marca {{ $loop->parent->iteration }}" width="80%" class="rounded-3 group-hover group-img-hover">
+                        <img  src="{{asset('storage/'.$grup->imagenGrupo)}}" 
+                              alt="Marca {{ $loop->parent->iteration }}" 
+                              width="80%" 
+                              class="rounded-3 group-hover group-img-hover {{$grup->idGrupoProducto == $grupo->idGrupoProducto ? 'group-selected' : ''}} ">
                         <h4>{{$grup->nombreGrupo}}</h4>
                     </a>
                   </div>
@@ -53,13 +66,26 @@
             $chunks = $categoria->GrupoProducto->chunk(3);
           @endphp
           @foreach ($chunks as $index => $chunk)
-            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}  text-center">
+            @php
+              $activeCarrusel = false;
+            @endphp
+            @foreach ($chunk as $valChunk)
+              @if($valChunk->idGrupoProducto == $grupo->idGrupoProducto)
+                @php
+                  $activeCarrusel = true;
+                @endphp
+              @endif
+            @endforeach
+            <div class="carousel-item {{ $activeCarrusel == true ? 'active' : '' }} text-center">
               <div class="row justify-content-center">
                   <div class="col-1"></div>
                 @foreach ($chunk as $grup)
                   <div class="col-3">
                      <a href="{{route('categoria', [$categoria->slugCategoria,$grup->slugGrupo])}}" class="text-decoration-none text-dark">
-                        <img src="{{asset('storage/'.$grup->imagenGrupo)}}" alt="Marca {{ $loop->parent->iteration }}" width="80%" class="border rounded-3">
+                        <img  src="{{asset('storage/'.$grup->imagenGrupo)}}" 
+                              alt="Marca {{ $loop->parent->iteration }}" 
+                              width="80%" 
+                              class="border rounded-3 {{$grup->idGrupoProducto == $grupo->idGrupoProducto ? 'group-selected' : ''}}">
                         <p>{{$grup->nombreGrupo}}</p>
                     </a>
                   </div>
@@ -86,34 +112,17 @@
     <br>
     <br>
     <br>
-    @if(count($grupo->Producto) == 0)
-        <div class="container align-middle" style="height:50vh">
-            <div class="row" style="height:20vh">
-            </div>
-            <x-aviso_no_encontrado :nameProduct="''" />
-        </div>
-    @else
     <div class="row">
         <div class="col-md-2 d-none d-sm-block" >
-            <div class="row" style="height:3rem">
-            </div>
-            pal filtro componente filtromedio
+          <x-filtro_medio :filtros="$filtros"/>
         </div>
-        <div class="col-md-10 d-none d-md-flex" id="reload_filtro_med" >
-            <x-card_producto_medio :storage="$productos" :colsmall="6" :colmedio="3" :empres="$empresa" :dolar="$tipoCambio" :cantCards="16"  />
-        </div>
-        <div class="col-12 d-block d-sm-none sticky-div" >
-          pal filtro componente filtrosmall
-        </div>
-        <div class="col-12 d-flex d-sm-none">
-            <x-card_producto_small :selectedProducts="$productos" :colsmall="6" :colmedio="4" :empres="$empresa" :dolar="$tipoCambio"/>
+        <div class="col-md-10">
+            <x-card_producto_medio :storage="$productos" :colsmall="6" :colmedio="3" :empres="$empresa" :cantCards="16"  />
         </div>
     </div>
     <br>
     <br>
     <x-carrusel_marcas :marcas="$marcas->shuffle()"/>
-    @endif
-    
 </div>
 <br>
 <br>

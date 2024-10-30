@@ -1,9 +1,8 @@
 
 <div class="row">
     @foreach ($productos as $producto)
-    <div class="col-md-{{$colmedio}} justify-content-center mb-3">
-        <a href="#" class="text-decoration-none">
-            <div class="card w-100 filter" data-dispo="{{$producto->estadoProductoWeb}}" data-grupo="{{$producto->idGrupo}}" data-marca="{{$producto->idMarca}}" style="width: 16rem">
+    <div class="col-{{$colsmall}} col-md-{{$colmedio}} justify-content-center mb-3">
+            <div class="card w-100 filter border shadow" data-dispo="{{$producto->estadoProductoWeb}}" data-grupo="{{$producto->idGrupo}}" data-marca="{{$producto->idMarca}}" style="width: 16rem">
                 <a href="{{ route('producto', [$producto->slugProducto]) }}">
                     <img src="{{ $producto->publicImages()[0] }}" class="card-img-top productimg" alt="...">
                 </a>
@@ -33,7 +32,6 @@
                     </div>
                 </div>
             </div>
-        </a>
     </div>
     @endforeach
 </div>

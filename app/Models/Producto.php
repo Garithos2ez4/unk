@@ -97,12 +97,12 @@ class Producto extends Model
     
     public function precioTotalDolar($preciosService)
     {
-        return number_format($preciosService->getPrecioTotal($this->precioDolar, $this->idGrupo, 'DOLAR', $this->estadoProductoWeb, $this->gananciaExtra), 2, '.', ',');
+        return number_format($preciosService->getPrecioTotal($this->precioDolar, $this->idGrupo, 'DOLAR', $this->estadoProductoWeb, $this->gananciaExtra), 1, '.', ',') . '0';
     }
 
     public function precioTotalSol($preciosService)
     {
-        return number_format($preciosService->getPrecioTotal($this->precioDolar, $this->idGrupo, 'SOL', $this->estadoProductoWeb, $this->gananciaExtra), 2, '.', ',');
+        return number_format($preciosService->getPrecioTotal($this->precioDolar, $this->idGrupo, 'SOL', $this->estadoProductoWeb, $this->gananciaExtra), 1, '.', ',') . '0';
     }
     
     public function publicImages(){

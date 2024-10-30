@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Caracteristicas;
 use App\Models\Producto;
 
 class ProductoRepository implements ProductoRepositoryInterface
@@ -15,32 +16,37 @@ class ProductoRepository implements ProductoRepositoryInterface
     }
 
     public function getAll(){
-        return Producto::all();
+        return Producto::where('estadoProductoWeb','<>','DESCONTINUADO')->get();
     }
 
     public function getOne($column,$data){
         $this->validateColumns($column);
-        return Producto::where($column,'=',$data)->first();
+        return Producto::where('estadoProductoWeb','<>','DESCONTINUADO')->where($column,'=',$data)->first();
     }
 
     public function getAllByColumn($column,$data){
         $this->validateColumns($column);
-        return Producto::where($column,'=',$data)->get();
+        return Producto::where('estadoProductoWeb','<>','DESCONTINUADO')->where($column,'=',$data)->get();
     }
 
     public function searchByColumn($column,$data){
         $this->validateColumns($column);
-        return Producto::where($column, 'LIKE', '%' . $data . '%')->get();
+        return Producto::where('estadoProductoWeb','<>','DESCONTINUADO')->where($column, 'LIKE', '%' . $data . '%')->get();
     }
 
     public function getPaginationByColumn($column,$data,$cant){
-        return Producto::where($column,'=',$data)->paginate($cant);
+        return Producto::where('estadoProductoWeb','<>','DESCONTINUADO')->where($column,'=',$data)->paginate($cant);
     }
 
     public function getAllByCategoria($idCategoria){
         return Producto::join('GrupoProducto','GrupoProducto.idGrupoProducto','=','Producto.idGrupo')
-                        ->select('Producto.*')->where('GrupoProducto.idCategoria','=',$idCategoria)
+                        ->select('Producto.*')->where('Producto.estadoProductoWeb','<>','DESCONTINUADO')
+                        ->where('GrupoProducto.idCategoria','=',$idCategoria)
                         ->get();
+    }
+
+    public function getSpectsByColumn($column,$data){
+        return Producto::with('Caracteristicas_Producto.Caracteristicas')->where('estadoProductoWeb','<>','DESCONTINUADO')->where($column,'=',$data)->get();
     }
 
     public function create(array $data){

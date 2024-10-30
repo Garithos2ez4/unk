@@ -30,6 +30,6 @@ class CategoriaService implements CategoriaServiceInterface
     }
 
     public function getProductoPaginationXGrupo($idGrupo){
-        return $this->productoRepository->getPaginationByColumn('idGrupo',$idGrupo,16);
+        return $this->productoRepository->getPaginationByColumn('idGrupo',$idGrupo,24);
     }
 }

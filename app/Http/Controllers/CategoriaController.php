@@ -3,26 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\CategoriaProducto;
-use App\Models\GrupoProducto;
-use App\Models\Producto;
 use App\Services\CategoriaServiceInterface;
-use Illuminate\Support\Facades\DB;
-use App\Services\HeaderService;
-use App\Services\FiltroService;
 use App\Services\HeaderServiceInterface;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Services\ProductoServiceInterface;
 
 class CategoriaController extends Controller
 {
     protected $headerService;
     protected $categoriaService;
+    protected $productoService;
 
     public function __construct(HeaderServiceInterface $headerService,
-                                CategoriaServiceInterface $categoriaService)
+                                CategoriaServiceInterface $categoriaService,
+                                ProductoServiceInterface $productoService)
     {
         $this->headerService = $headerService;
         $this->categoriaService = $categoriaService;
+        $this->productoService = $productoService;
     }
     public function index($cat,$grup,Request $request){
         //Variables para el header,nav y footer
@@ -34,21 +31,18 @@ class CategoriaController extends Controller
         
         //Variables propias del controlador
         $categoria = $this->categoriaService->getCategoriaXSlug($cat);
-        
         $grupo = $this->categoriaService->getGrupoXSlug($grup);
-
         $productos = $this->categoriaService->getProductoPaginationXGrupo($grupo->idGrupoProducto);
+        $filtros = $this->productoService->getFiltros('idGrupo',$grupo->idGrupoProducto);
+        
+        $responseAjax = $this->productoService->getAjaxListaProductos($request,$empresa,$productos);
 
-        if ($request->query('page')) {
-            $colmedio = $request->query('colmedio');
-            $empres = $empresa;
-            return response()->json([
-                'html' => view('components.partials.lista-productos', compact('productos', 'colmedio','empres'))->render(),
-                'paginaActual' => $productos->currentPage(),
-                'paginaPrevia' => $productos->previousPageUrl(),
-                'paginaSiguiente' => $productos->nextPageUrl()
-            ]);
+        // dd($request);
+
+        if($responseAjax){
+            return $responseAjax;
         }
+
         return view('categoria',[
                     'categorias' => $categorias,
                     'empresa' => $empresa,
@@ -57,7 +51,8 @@ class CategoriaController extends Controller
                     'tipoCambio' => $tipoCambio,
                     'categoria' => $categoria,
                     'grupo' => $grupo,
-                    'productos' => $productos
+                    'productos' => $productos,
+                    'filtros' => $filtros
         ]);
     }
 }

@@ -11,6 +11,9 @@ body {
     border:0.5px solid {{$empresa->colorDos}}!important;
 }
 
+.group-selected{
+    border:0.5px solid {{$empresa->colorDos}}!important;
+}
 
 #loader {
         position: fixed;

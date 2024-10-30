@@ -32,6 +32,8 @@ use App\Services\MedioDePagoService;
 use App\Services\MedioDePagoServiceInterface;
 use App\Services\PreciosService;
 use App\Services\PreciosServiceInterface;
+use App\Services\ProductoService;
+use App\Services\ProductoServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -57,6 +59,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PreciosServiceInterface::class,PreciosService::class);
         $this->app->bind(MedioDePagoServiceInterface::class,MedioDePagoService::class);
         $this->app->bind(CategoriaServiceInterface::class,CategoriaService::class);
+        $this->app->bind(ProductoServiceInterface::class,ProductoService::class);
     }
 
     /**
