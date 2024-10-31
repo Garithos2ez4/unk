@@ -45,7 +45,7 @@
                     <div class="row">
                         @foreach ($filtros['tipos'] as $tipo)
                             <div class="form-check col-6">
-                                <input class="form-check-input check-categorias border-color-empresa-uno" type="checkbox" name="filtro[grupos][]" value="{{$tipo->idTipoProducto}}">
+                                <input class="form-check-input check-categorias border-color-empresa-uno" type="checkbox" name="filtro[tipos][]" value="{{$tipo->idTipoProducto}}">
                                 <label class="form-check-label lh-1" for="">
                                 <small class="">{{$tipo->tipoProducto}}</small>
                                 </label>
@@ -59,7 +59,7 @@
                     <div class="row">
                         @foreach ($filtros['categorias'] as $categoria)
                             <div class="form-check col-6">
-                                <input class="form-check-input check-categorias border-color-empresa-uno" type="checkbox" name="filtro[grupos][]" value="{{$categoria->idCategoria}}">
+                                <input class="form-check-input check-categorias border-color-empresa-uno" type="checkbox" name="filtro[categorias][]" value="{{$categoria->idCategoria}}">
                                 <label class="form-check-label lh-1" for="">
                                 <small class="">{{$categoria->nombreCategoria}}</small>
                                 </label>
@@ -73,11 +73,11 @@
                     <div class="row">
                         <div class="col-12 ps-0">
                             <label class="form-label">Minimo ({{$filtros['precioMin'].'0'}}):</label>
-                            <input type="number" class="form-control" value="0" min="{{$filtros['precioMin']}}" name="">
+                            <input type="number" class="form-control" value="0" min="{{$filtros['precioMin']}}" name="filtro[preciomin]">
                         </div>
                         <div class="col-12 ps-0">
                             <label class="form-label">Maximo ({{$filtros['precioMax'].'0'}}):</label>
-                            <input type="number" class="form-control" value="0" max="{{$filtros['precioMax']}}">
+                            <input type="number" class="form-control" value="0" max="{{$filtros['precioMax']}}" name="filtro[preciomax]">
                         </div>
                     </div>
                     <div class="row pt-2" >

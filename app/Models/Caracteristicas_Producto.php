@@ -5,7 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Caracteristicas_Producto extends Model
 {
- 
     protected $table = 'Caracteristicas_Producto';
     protected $primaryKey = ['idCaracteristica', 'idProducto'];
     public $incrementing = false;
