@@ -4,44 +4,61 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use App\Models\Empresa;
+use App\Repositories\CategoriaProductoRepositoryInterface;
 use App\Repositories\ProductoRepositoryInterface;
+use App\Repositories\TipoProductoRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductoService implements ProductoServiceInterface
 {
     protected $productoRepository;
     protected $preciosService;
+    protected $categoriaRepository;
+    protected $tipoRepository;
 
     public function __construct(ProductoRepositoryInterface $productoRepository,
-                                PreciosServiceInterface $preciosService)
+                                PreciosServiceInterface $preciosService,
+                                CategoriaProductoRepositoryInterface $categoriaRepository,
+                                TipoProductoRepositoryInterface $tipoRepository)
     {
         $this->productoRepository = $productoRepository;
         $this->preciosService = $preciosService;
+        $this->categoriaRepository = $categoriaRepository;
+        $this->tipoRepository = $tipoRepository;
+    }
+
+    public function getOneProducto($slug){
+        return $this->productoRepository->getOne('slugProducto',$slug);
+    }
+
+    public function getProductosByCategoria($idCategoria,$cantidad){
+        $categoria = $this->categoriaRepository->getOne('idCategoria',$idCategoria);
+        $productos = $categoria->GrupoProducto->pluck('Producto')->flatten()->shuffle()->take($cantidad);
+        return $productos;
     }
     public function getAjaxListaProductos(Request $request, Empresa $empresa, LengthAwarePaginator $productos)
     {
-        if ($request->query('page')) {
-            $colmedio = $request->query('colmedio');
-            $colsmall = $request->query('colsmall');
-            $empres = $empresa;
-            return response()->json([
-                'html' => view('components.partials.lista-productos', compact('productos', 'colmedio','colsmall','empres'))->render(),
-                'paginaActual' => $productos->currentPage(),
-                'paginaPrevia' => $productos->previousPageUrl(),
-                'paginaSiguiente' => $productos->nextPageUrl()
-            ]);
-        }
+        $colmedio = $request->query('colmedio');
+        $colsmall = $request->query('colsmall');
+        $empres = $empresa;
+        return response()->json([
+            'html' => view('components.partials.lista-productos', compact('productos', 'colmedio','colsmall','empres'))->render(),
+            'paginas' => $productos->total()
+        ]);
     }
 
-    public function getFiltros($column, $data) { 
-        $productos = $this->productoRepository->getAllByColumn($column, $data); 
+    public function getFiltros(LengthAwarePaginator $productos) { 
         $filtros = $this->getParametros($productos);
         return $filtros;
     }
 
-    public function searchFiltros($column,$data){
-        
-        dd($column);
+    public function getProductsFilter($column,$data,$cantidad,Request $request){
+        $consultas = array();
+        if($request->query('filtro')){
+            $consultas = $request->query('filtro');
+        }
+        $productos = $this->productoRepository->getPaginationByColumn($column,$data,$cantidad,$consultas);
+        return $productos;
     }
 
     private function getParametros($productos){

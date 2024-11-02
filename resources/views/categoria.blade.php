@@ -113,11 +113,8 @@
     <br>
     <br>
     <div class="row">
-        <div class="col-md-2 d-none d-sm-block" >
-          <x-filtro_medio :filtros="$filtros"/>
-        </div>
-        <div class="col-md-10">
-            <x-card_producto_medio :storage="$productos" :colsmall="6" :colmedio="3" :empres="$empresa" :cantCards="16"  />
+        <div class="col-md-12">
+            <x-card_producto_medio :storage="$productos" :colsmall="6" :colmedio="3" :empres="$empresa" :cantCards="16" :filtros="$filtros" />
         </div>
     </div>
     <br>

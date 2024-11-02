@@ -1,4 +1,28 @@
-
+<div class="row">
+    <div class="col-6 col-md-3 d-none d-sm-block">
+        <h6 class=" pt-4 fw-light" id="recountMedio">{{$productos->total()}} productos encontrados</h6>
+    </div>
+    <div class="col-12 col-md-9 d-flex justify-content-center justify-content-md-end align-items-center pt-2 {{$productos->lastPage() < 2 ? 'd-none' : ''}}">
+            <ul class="pagination custom-pagination mt-2" id="pagination">
+              <li class="page-item">
+                    <a id="page-item-previus" href="{{$productos->previousPageUrl() == null ? 'javascript:void(0)' : $productos->previousPageUrl()}}" class="page-link bg-empresa-tres text-empresa-uno" style="cursor:pointer" aria-label="Previous">
+                  <span aria-hidden="true"><i class="bi bi-caret-left-fill"></i></span>
+                </a>
+              </li>
+              @for ($i = 1; $i <= $productos->lastPage(); $i++)
+              <li data-pag="{{$i}}" class="page-item  pag-btn {{$productos->currentPage() == $i ? 'active': ''}} current-page">
+                <a href="{{$productos->url($i)}}" class="page-link bg-empresa-tres text-empresa-uno ">{{$i}}</a>
+              </li>
+              @endfor
+              
+              <li class="page-item">
+                <a id="page-item-next" href="{{$productos->nextPageUrl() == null ? 'javascript:void(0)' : $productos->nextPageUrl()}}" class="page-link bg-empresa-tres text-empresa-uno" style="cursor:pointer" aria-label="Next" >
+                  <span aria-hidden="true"><i class="bi bi-caret-right-fill"></i></span>
+                </a>
+              </li>
+            </ul>
+    </div>
+</div>
 <div class="row">
     @foreach ($productos as $producto)
     <div class="col-{{$colsmall}} col-md-{{$colmedio}} justify-content-center mb-3">

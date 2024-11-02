@@ -67,15 +67,15 @@ height: 100%;
 }
 
 .text-empresa-uno{
-    color:{{$empresa->colorUno}};
+    color:{{$empresa->colorUno}} !important;
 }
 
 .text-empresa-dos{
-    color:{{$empresa->colorDos}};
+    color:{{$empresa->colorDos}} !important;
 }
 
 .text-empresa-tres{
-    color:{{$empresa->colorTres}};
+    color:{{$empresa->colorTres}} !important;
 }
 
 .text-agotado{
@@ -262,4 +262,29 @@ height: 100%;
     border-color: gray; /* Elimina el color del borde */
     box-shadow: none; /* Elimina la sombra del borde */
     outline: none; /* Elimina el contorno */
+}
+
+.link-select {
+    appearance: none; /* Quitar estilo predeterminado */
+    background: none;
+    border: none;
+    color: #007bff; /* Color similar a enlaces */
+    font-size: 1rem; /* Ajusta según tus necesidades */
+    cursor: pointer; /* Cambia el cursor a puntero */
+    text-decoration: underline; /* Simula un enlace subrayado */
+}
+
+.link-select:focus {
+    outline: none; /* Quita el borde de enfoque */
+}
+
+/* Estilo para el borde del select cuando está enfocado */ 
+.form-select:focus { 
+    border-color: {{$empresa->colorDos}}; /* Cambia el color del borde al enfocar */ 
+    box-shadow: {{$empresa->colorDos}}; /* Añade una sombra al enfocar */ 
+} 
+
+.form-select option:hover { 
+    background-color: {{$empresa->colorDos}} !important; /* Cambia el color de fondo al pasar sobre las opciones */
+    color: {{$empresa->colorTres}}; /* Cambia el color del texto al pasar sobre las opciones */ 
 }

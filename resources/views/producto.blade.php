@@ -59,8 +59,8 @@
         <div class="col-12 col-md-6 pt-4">
             <h6 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->nombreGrupo}}</h6>
             <h2 style="color:{{$empresa->colorUno}}">{{$producto->nombreProducto}}</h2>
-            <h3 style="color:{{$empresa->colorDos}}">{{$producto->precioTotalDolar() < 1 ? 'Consultar precio por WhatsApp':'$USD '.$producto->precioTotalDolar()}}</h3>
-            <h5 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->precioTotalSol() < 1 ? '':'S/.PEN '.$producto->precioTotalSol()}} </h5>
+            <h3 style="color:{{$empresa->colorDos}}">{{$producto->precioTotalDolar($preciosService) < 1 ? 'Consultar precio por WhatsApp':'$USD '.$producto->precioTotalDolar($preciosService)}}</h3>
+            <h5 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->precioTotalSol($preciosService) < 1 ? '':'S/.PEN '.$producto->precioTotalSol($preciosService)}} </h5>
             <p class="mb-0"><i class="bi bi-shield-check"></i> Garantía de {{$producto->garantia}}.</p>
             <p class="mb-0"><i class='bx bxs-truck'></i> Preguntar por envio y disponibilidad.</p>
             <p><i class="bi bi-question-circle"></i> Stock <span class="text-lowercase">{{$producto->estadoProductoWeb}}</span></p>
@@ -71,13 +71,7 @@
             <br>
             <div class="col-12 col-md-6">
                 <div class="d-grid gap-2">
-                @foreach($redes as $red)
-                    @if($red->plataforma == 'Whatsapp')
-                    <a class="btn btn-success" href="{{$red->enlace}}?text=Hola%2C%20estoy%20interesado%20en%20{{$producto->nombreProducto}}%20de%20su%20sitio%20web. {{$miUrl}}" target="_blank" rel="noopener noreferrer" role="button"><i class="bi bi-whatsapp"></i> Comprar via whatsapp</a>
-                    @break
-                    @endif
-                 @endforeach
-                  
+                    <a class="btn btn-success" href="{{$empresa->EmpresaRedSocial->where('idRedSocial',5)->first()->enlace}}?text=Hola%2C%20estoy%20interesado%20en%20{{$producto->nombreProducto}}%20de%20su%20sitio%20web. {{$miUrl}}" target="_blank" rel="noopener noreferrer" role="button"><i class="bi bi-whatsapp"></i> Comprar via whatsapp</a>
                 </div>
             </div>
             <div class="col-6">
@@ -115,8 +109,8 @@
             </div>
             <div class="row">
                 <ul class="list-group list-group-flush ">
-                    @foreach($detalles as $detalle)
-                    <li class="list-group-item bg-body"><strong>{{$detalle->especificacion}}: </strong>{{$detalle->caracteristicaProducto}}</li>
+                    @foreach($producto->Caracteristicas_Producto as $detalle)
+                    <li class="list-group-item bg-body"><strong>{{$detalle->Caracteristicas->especificacion}}: </strong>{{$detalle->caracteristicaProducto}}</li>
                     @endforeach
                 </ul>
             </div>

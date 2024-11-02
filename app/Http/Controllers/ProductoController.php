@@ -3,48 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Services\HeaderService;
-use App\Models\Producto;
+use App\Services\HeaderServiceInterface;
+use App\Services\ProductoServiceInterface;
 use Illuminate\Support\Facades\URL;
 // llamar a los models: use App\Models\CategoriaProducto;
 
 class ProductoController extends Controller
 {
+    protected $headerService;
+    protected $productoService;
+    
+    public function __construct(HeaderServiceInterface $headerService,
+                                ProductoServiceInterface $productoService)
+    {
+        $this->headerService = $headerService;
+        $this->productoService = $productoService;
+    }
     public function index($product){
         //Variables para el header,nav y footer
-        $header = new HeaderService();
-        $categorias = $header->obtenerCategorias();
-        $empresa = $header->obtenerEmpresa();
-        $marcas = $header->obtenerMarcas();
-        $tipos = $header->obtenerTipo();
-        $redes = $header->obtenerLinkRedes();
-        $tipoCambio = $header->obtenerCambioDolar();
+        $categorias = $this->headerService->obtenerCategorias();
+        $empresa = $this->headerService->obtenerEmpresa();
+        $marcas = $this->headerService->obtenerMarcas();
+        $tipos = $this->headerService->obtenerTipo();
+        $tipoCambio = $this->headerService->obtenerCambioDolar();
         
         //Variables propias del controlador
-        $slug = Producto::select('idProducto')->where('slugProducto','=',$product)->first();
-        //dd(json_encode($product));
-        
-        $getProducto = DB::select('CALL sp_get_producto(?)', [$slug->idProducto]);
-        $producto = Producto::hydrate($getProducto);
-        $detalles = DB::select('CALL sp_get_detallexproducto(?)', [$slug->idProducto]);
-        $producto = collect($producto)->first();
+        $producto = $this->productoService->getOneProducto($product);
         $miUrl = URL::current();
         
-        $productosCategoria = Producto::join('GrupoProducto','Producto.idGrupo','=','GrupoProducto.idGrupoProducto')->select('Producto.*')
-                                ->where('GrupoProducto.idCategoria','=',$producto->GrupoProducto->idCategoria)->inRandomOrder()->take(17)->get();
+        $productosCategoria = $this->productoService->getProductosByCategoria($producto->GrupoProducto->idCategoria,17);
         
         return view('producto',[
                     'categorias' => $categorias,
                     'empresa' => $empresa,
                     'marcas' => $marcas,
                     'tipos' => $tipos,
-                    'redes' => $redes,
                     'tipoCambio' => $tipoCambio,
                     'producto' => $producto,
                     'miUrl' => $miUrl,
-                    'detalles' => $detalles,
                     'productosCategoria' => $productosCategoria
-]);
+        ]);
     }
 }

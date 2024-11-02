@@ -32,18 +32,14 @@ class CategoriaController extends Controller
         //Variables propias del controlador
         $categoria = $this->categoriaService->getCategoriaXSlug($cat);
         $grupo = $this->categoriaService->getGrupoXSlug($grup);
-        $productos = $this->categoriaService->getProductoPaginationXGrupo($grupo->idGrupoProducto);
-        //variables de los filtros
-        $filtros = $this->productoService->getFiltros('idGrupo',$grupo->idGrupoProducto);
+        $productos = $this->productoService->getProductsFilter('idGrupo',$grupo->idGrupoProducto,24,$request);
         //Lista de productos paginados
-        $responseAjax = $this->productoService->getAjaxListaProductos($request,$empresa,$productos);
-
-        dd($request);
-
-        if($responseAjax){
+        if($request->query('page') || $request->query('filtro')){
+            $responseAjax = $this->productoService->getAjaxListaProductos($request,$empresa,$productos);
             return $responseAjax;
         }
-
+        //variables de los filtros
+        $filtros = $this->productoService->getFiltros($productos);
         return view('categoria',[
                     'categorias' => $categorias,
                     'empresa' => $empresa,
