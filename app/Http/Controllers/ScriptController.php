@@ -29,15 +29,6 @@ class ScriptController extends Controller
         return response($js)->header('Content-Type', 'application/javascript');
     }
     
-    public function sliderScript($titulo, $slideSmall, $slideMedio)
-    {
-        $js = view('js.slider-scripts',['titulo' => $titulo,
-                                        'slideSmall' => $slideSmall,
-                                        'slideMedio' => $slideMedio])->render();
-
-        return response($js)->header('Content-Type', 'application/javascript');
-    }
-    
     public function reclamosScript()
     {
         

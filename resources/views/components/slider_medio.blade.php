@@ -1,5 +1,4 @@
 <div class="slider_medio">
-    <script src="{{ route('js.carrusel-marcas-scripts',[$titulo,$slideSmall,$slideMedio]) }}"></script>
     <div class="row">
         <div class="col-6">
             <h2>{{$titulo}}</h2>
@@ -123,7 +122,7 @@
                     });
                 } else {
                     slideElements.forEach(function(x) {
-                        x.style.width = '20%';
+                        x.style.width = '{{$sizeCardMed}}';
                     });
                 } 
             }

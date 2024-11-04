@@ -7,4 +7,6 @@ interface HomeServiceInterface {
     public function getProductsByLaptopGamers();
     public function getProductsByMonitores();
     public function getProductsByImpresoras();
+    public function getAccesorios();
+    public function getExclusivos();
 }

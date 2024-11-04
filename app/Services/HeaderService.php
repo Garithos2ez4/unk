@@ -49,7 +49,7 @@ class HeaderService implements HeaderServiceInterface
     
     public function obtenerMarcas()
     {
-        return $this->marcaRepository->getAll()->sortByDesc('nombreMarca'); //MarcaProducto::select('idMarca','nombreMarca','imagenMarca','slugMarca')->orderBy('nombreMarca','asc')->get();
+        return $this->marcaRepository->getAll()->sortBy('nombreMarca'); //MarcaProducto::select('idMarca','nombreMarca','imagenMarca','slugMarca')->orderBy('nombreMarca','asc')->get();
     }
     
     public function obtenerTipo()

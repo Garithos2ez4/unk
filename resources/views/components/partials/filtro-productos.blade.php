@@ -3,7 +3,7 @@
         <div class="row ps-0">
             <label class="form-label ms-0 text-secondary">Ordenar por:</label>
             <select class="form-select border-empresa-uno mb-3 submit-filtros" name="filtro[orden]">
-                <option value="" selected>Relevancia</option>
+                <option value="">Relevancia</option>
                 <option value="desc">Mayor precio</option>
                 <option value="asc">Menor Precio</option>
               </select>
@@ -51,32 +51,15 @@
                     
                 </div>
                 <div class="row pt-2" >
-                    <h6 class="ms-0 ps-0">Tipo:</h6>
-                </div>
-                <div class="row">
-                    @if(count($filtros['tipos']) > 0)
-                        @foreach ($filtros['tipos'] as $tipo)
-                            <div class="form-check col-6">
-                                <input class="form-check-input check-categorias border-color-empresa-uno submit-filtros" type="checkbox" name="filtro[tipos][]" value="{{$tipo->idTipoProducto}}">
-                                <label class="form-check-label lh-1" for="">
-                                <small class="">{{$tipo->tipoProducto}}</small>
-                                </label>
-                            </div>
-                        @endforeach
-                    @else
-                        <small>Sin tipos</small>
-                    @endif
-                </div>
-                <div class="row pt-2" >
                     <h6 class="ms-0 ps-0">Categoria:</h6>
                 </div>
                 <div class="row">
-                    @if(count($filtros['categorias']) > 0)
-                        @foreach ($filtros['categorias'] as $categoria)
-                            <div class="form-check col-6">
-                                <input class="form-check-input check-categorias border-color-empresa-uno submit-filtros" type="checkbox" name="filtro[categorias][]" value="{{$categoria->idCategoria}}">
+                    @if(count($filtros['grupos']) > 0)
+                        @foreach ($filtros['grupos'] as $grupo)
+                            <div class="form-check col-12">
+                                <input class="form-check-input border-color-empresa-uno submit-filtros" type="checkbox" name="filtro[grupos][]" value="{{$grupo->idGrupoProducto}}">
                                 <label class="form-check-label lh-1" for="">
-                                <small class="">{{$categoria->nombreCategoria}}</small>
+                                <small class="">{{$grupo->nombreGrupo}}</small>
                                 </label>
                             </div>
                         @endforeach
@@ -147,8 +130,8 @@
                     Ordenar por
                 </button>
                 <div class="collapse text-end" id="collapseFiltroOrder">
-                    <select class="submit-filtros link-select text-empresa-uno text-end" name="filtro[orden]">
-                        <option value="" selected>Relevancia</option>
+                    <select class="submit-filtros link-select text-empresa-uno text-end" name="filtro[ordensmall]">
+                        <option value="">Relevancia</option>
                         <option value="desc">Mayor precio</option>
                         <option value="asc">Menor precio</option>
                     </select>
@@ -198,13 +181,13 @@
                 </button>
                 <div class="collapse" id="collapseFiltroCat">
                     <div class="row">
-                        @if($filtros['categorias'])
-                            @foreach ($filtros['categorias'] as $categoria)
+                        @if($filtros['grupos'])
+                            @foreach ($filtros['grupos'] as $grupo)
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input class="form-check-input border-color-empresa-uno submit-filtros" type="checkbox" value="{{$categoria['idCategoria']}}" name="filtro[categorias][]" >
+                                        <input class="form-check-input border-color-empresa-uno submit-filtros" type="checkbox" value="{{$grupo['idGrupoProducto']}}" name="filtro[grupos][]" >
                                         <label class="form-check-label">
-                                        <small>{{$categoria['nombreCategoria']}}</small>
+                                        <small>{{$grupo['nombreGrupo']}}</small>
                                         </label>
                                     </div>
                                 </div>

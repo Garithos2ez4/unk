@@ -21,14 +21,22 @@ class HomeService implements HomeServiceInterface
     }
 
     public function getProductsByLaptopGamers(){
-        return $this->productoRepository->getAllByColumn('idGrupo',1)->shuffle()->slice(0, 17);
+        return $this->productoRepository->getAllByColumn('idGrupo',1)->shuffle()->take(17);
     }
 
     public function getProductsByMonitores(){
-        return $this->productoRepository->getAllByCategoria(3)->shuffle()->slice(0, 17);
+        return $this->productoRepository->getAllByCategoria(3)->shuffle()->take(17);
     }
 
     public function getProductsByImpresoras(){
-        return $this->productoRepository->getAllByCategoria(6)->shuffle()->slice(0, 17);
+        return $this->productoRepository->getAllByCategoria(6)->shuffle()->take(17);
+    }
+
+    public function getAccesorios(){
+        return $this->productoRepository->getAllByCategoria(4)->shuffle()->take(30);
+    }
+
+    public function getExclusivos(){
+        return $this->productoRepository->getAllByColumn('estadoProductoWeb','OFERTA')->shuffle()->take(9);
     }
 }

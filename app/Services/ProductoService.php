@@ -47,7 +47,14 @@ class ProductoService implements ProductoServiceInterface
         ]);
     }
 
-    public function getFiltros(LengthAwarePaginator $productos) { 
+    public function getFiltros($column,$data) { 
+        $productos = $this->productoRepository->getAllByColumn($column,$data);
+        $filtros = $this->getParametros($productos);
+        return $filtros;
+    }
+
+    public function searchFiltros($column,$data) { 
+        $productos = $this->productoRepository->searchByColumn($column,$data);
         $filtros = $this->getParametros($productos);
         return $filtros;
     }
@@ -61,14 +68,21 @@ class ProductoService implements ProductoServiceInterface
         return $productos;
     }
 
+    public function searchProductsFilter($column,$data,$cantidad,Request $request){
+        $consultas = array();
+        if($request->query('filtro')){
+            $consultas = $request->query('filtro');
+        }
+        $productos = $this->productoRepository->searchPaginationByColumn($column,$data,$cantidad,$consultas);
+        return $productos;
+    }
+
     private function getParametros($productos){
         $disponibilidad = $productos->unique('estadoProductoWeb')->pluck('estadoProductoWeb');
         $marcas = $productos->load('MarcaProducto')->pluck('MarcaProducto')->unique('idMarca'); 
-        $tipos = $productos->load('GrupoProducto')->pluck('GrupoProducto')->unique('GrupoProducto.idTipoProducto')->pluck('TipoProducto');
-        $categorias = $productos->load('GrupoProducto')->pluck('GrupoProducto')->unique('GrupoProducto.idCategoria')->pluck('CategoriaProducto');
+        $grupos = $productos->load('GrupoProducto')->pluck('GrupoProducto')->unique('idGrupoProducto');
         $precios = $productos->map(function ($producto) {
                                     return floatval(str_replace(',', '', $producto->precioTotalSol($this->preciosService)));
-                                    // Suponiendo que calcularPrecio() es el método del modelo 
                                     });
         $precioMax = $precios->max();
         $precioMin = $precios->min();
@@ -77,13 +91,15 @@ class ProductoService implements ProductoServiceInterface
                                     ->flatten()
                                     ->unique('caracteristicaProducto');
 
+        // $especificaciones = $productos->load('Caracteristicas_Producto');
+        // dd($productos);
+
         $caracteristicas = $especificaciones->groupBy('Caracteristicas.idCaracteristica')
                                             ->sortBy(function ($spect) {
                                                 return $spect->first()->Caracteristicas->idCaracteristica; 
                                             })->map(function ($group) {
-                                                // Obtén el id y otras propiedades que quieras
                                                 $idCaracteristica = $group->first()->Caracteristicas->idCaracteristica;
-                                                $nombreCaracteristica = $group->first()->Caracteristicas->especificacion; // Asumiendo que existe este campo
+                                                $nombreCaracteristica = $group->first()->Caracteristicas->especificacion;
                                                 $tipoCaracteristica = $group->first()->Caracteristicas->tipo;
                                                 return [
                                                     'id' => $idCaracteristica,
@@ -94,8 +110,7 @@ class ProductoService implements ProductoServiceInterface
                                             });
         $filtros = ['disponibilidad' => $disponibilidad,
                     'marcas' => $marcas,
-                    'tipos' => $tipos,
-                    'categorias' => $categorias,
+                    'grupos' => $grupos,
                     'precioMin' => $precioMin,
                     'precioMax' => $precioMax,
                     'caracteristicas' => $caracteristicas];

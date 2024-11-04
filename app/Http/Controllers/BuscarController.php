@@ -6,80 +6,78 @@ use Illuminate\Http\Request;
 use App\Models\MarcaProducto;
 use App\Models\Producto;
 use App\Models\Caracteristicas_Producto;
+use App\Services\BuscarServiceInterface;
 use Illuminate\Support\Facades\DB;
 use App\Services\HeaderService;
 use App\Services\FiltroService;
+use App\Services\HeaderServiceInterface;
+use App\Services\ProductoServiceInterface;
 
 class BuscarController extends Controller
 {
+    protected $headerService;
+    protected $productoService;
+    protected $buscarService;
+
+    public function __construct(HeaderServiceInterface $headerService,
+                                ProductoServiceInterface $productoService,
+                                BuscarServiceInterface $buscarService)
+    {
+        $this->headerService = $headerService;
+        $this->productoService = $productoService;
+        $this->buscarService = $buscarService;
+    }
     public function index(Request $request){
+        //Variables para el header,nav y footer
+        $categorias = $this->headerService->obtenerCategorias();
+        $empresa = $this->headerService->obtenerEmpresa();
+        $marcas = $this->headerService->obtenerMarcas();
+        $tipos = $this->headerService->obtenerTipo();
+        $tipoCambio = $this->headerService->obtenerCambioDolar();
         //Variables propias del controlador
         $obt = $request->input('header');
         if(!empty($obt)){
            session(['buscar' => $obt]);
         }
+        $productos = $this->productoService->searchProductsFilter('nombreProducto',session()->get('buscar',$obt),32,$request);
         
-        $getProducts = collect();
-        
-        $marcaSearch = MarcaProducto::where('nombreMarca', 'LIKE', '%'.session()->get('buscar',$obt).'%')->first();
-        
-        if ($marcaSearch) {
-            // Buscar productos basados en el idMarca si se encontrÃ³ una marca
-            $getProducts = Producto::where('idMarca', '=', $marcaSearch->idMarca)->get();
+        //Lista de productos paginados
+        if($request->query('page') || $request->query('filtro')){
+            $responseAjax = $this->productoService->getAjaxListaProductos($request,$empresa,$productos);
+            return $responseAjax;
         }
-        
-        if($getProducts->isEmpty()){
-            $getProducts = Producto::where('nombreProducto', 'LIKE', '%'.session()->get('buscar',$obt).'%')->get();
-        }
-        
-        if($getProducts->isEmpty()){
-            $getProducts = Producto::where('descripcionProducto', 'LIKE', '%'.session()->get('buscar',$obt).'%')->get();
-        }
-        
-        
-        $products = $getProducts;
-        
-        //Variables para el header,nav y footer
-        $header = new HeaderService();
-        $categorias = $header->obtenerCategorias();
-        $empresa = $header->obtenerEmpresa();
-        $marcas = $header->obtenerMarcas();
-        $tipos = $header->obtenerTipo();
-        $redes = $header->obtenerLinkRedes();
-        $tipoCambio = $header->obtenerCambioDolar();
-        
-        //variables para el filtro
-        $filtro = new FiltroService();
-        $parametrosFiltro = $filtro->parameterFilter($products);
-        $productos = $filtro->productsFilter($products,$request);
+
+        //variables de los filtros
+        $filtros = $this->productoService->searchFiltros('nombreProducto',session()->get('buscar',$obt));
         
         return view('buscar',[
                     'categorias' => $categorias,
                     'empresa' => $empresa,
                     'marcas' => $marcas,
                     'tipos' => $tipos,
-                    'redes' => $redes,
                     'tipoCambio' => $tipoCambio,
                     'obt' => $obt,
                     'productos' => $productos,
-                    'parametrosFiltro' => $parametrosFiltro
+                    'filtros' => $filtros
 ]);
     }
     
     public function search(Request $request)
     {
         $query = $request->input('query');
+
+        $results = $this->buscarService->searchProducts($query);
     
-         $results = Producto::where('nombreProducto', 'LIKE', "%{$query}%")
-                ->take(4) // Limitar a 5 resultados
-                ->get()
-                ->map(function ($producto) {
-                    // Agregar las URLs de las im¨¢genes al producto
-                    $producto->precioTotalDolar = $producto->precioTotalDolar();
-                    $producto->precioTotalSol = $producto->precioTotalSol();
-                    $producto->imageUrls = $producto->publicImages();
-                    return $producto;
-                });
+        //  $results = Producto::where('nombreProducto', 'LIKE', "%{$query}%")
+        //         ->take(4) // Limitar a 5 resultados
+        //         ->get()
+                // ->map(function ($producto) {
+                //     // Agregar las URLs de las imï¿½ï¿½genes al producto
+                //     $producto->precioTotalDolar = $producto->precioTotalDolar();
+                //     $producto->precioTotalSol = $producto->precioTotalSol();
+                //     $producto->imageUrls = $producto->publicImages();
+                //     return $producto;
+                // });
                 
         return response()->json($results);
     }

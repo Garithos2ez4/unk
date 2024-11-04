@@ -3,45 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\MarcaProducto;
-use App\Models\Producto;
-use Illuminate\Support\Facades\DB;
-use App\Services\HeaderService;
-use App\Services\FiltroService;
+use App\Services\HeaderServiceInterface;
+use App\Services\MarcaServiceInterface;
+use App\Services\ProductoServiceInterface;
 
 class MarcaController extends Controller
 {
+    protected $headerService;
+    protected $marcaService;
+    protected $productoService;
+
+    public function __construct(HeaderServiceInterface $headerService,
+                                MarcaServiceInterface $marcaService,
+                                ProductoServiceInterface $productoService)
+    {
+        $this->headerService = $headerService;
+        $this->marcaService =  $marcaService;
+        $this->productoService = $productoService;
+    }
     public function index($slug,Request $request){
         //Variables para el header,nav y footer
-        $header = new HeaderService();
-        $categorias = $header->obtenerCategorias();
-        $empresa = $header->obtenerEmpresa();
-        $marcas = $header->obtenerMarcas();
-        $tipos = $header->obtenerTipo();
-        $redes = $header->obtenerLinkRedes();
-        $tipoCambio = $header->obtenerCambioDolar();
+        $categorias = $this->headerService->obtenerCategorias();
+        $empresa = $this->headerService->obtenerEmpresa();
+        $marcas = $this->headerService->obtenerMarcas();
+        $tipos = $this->headerService->obtenerTipo();
+        $tipoCambio = $this->headerService->obtenerCambioDolar();
         
         //Variables propias del controlador
-        $slugMarca = MarcaProducto::select('idMarca')->where('slugMarca','=',$slug)->first();
-        $getProductos = DB::select('CALL sp_get_productoxmarca(?)', [$slugMarca->idMarca]);
-        $modelProductos = Producto::hydrate($getProductos);
-        $marca = MarcaProducto::firstWhere('idMarca', $slugMarca->idMarca);
-        
-        //variables para el filtro
-        $filtro = new FiltroService();
-        $parametrosFiltro = $filtro->parameterFilter($modelProductos);
-        $productos = $filtro->productsFilter($modelProductos,$request);
+        $marca = $this->marcaService->getMarcaBySlug($slug);
+        $productos = $this->productoService->getProductsFilter('idMarca',$marca->idMarca,24,$request);
+
+        //Lista de productos paginados
+        if($request->query('page') || $request->query('filtro')){
+            $responseAjax = $this->productoService->getAjaxListaProductos($request,$empresa,$productos);
+            return $responseAjax;
+        }
+
+        //variables de los filtros
+        $filtros = $this->productoService->getFiltros('idMarca',$marca->idMarca);
         
         return view('marca',[
                     'categorias' => $categorias,
                     'empresa' => $empresa,
                     'marcas' => $marcas,
                     'tipos' => $tipos,
-                    'redes' => $redes,
                     'tipoCambio' => $tipoCambio,
                     'marca' => $marca,
                     'productos' => $productos,
-                    'parametrosFiltro' => $parametrosFiltro
+                    'filtros' => $filtros
 ]);
     }
 }

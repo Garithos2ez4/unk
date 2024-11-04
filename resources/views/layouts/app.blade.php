@@ -82,7 +82,7 @@
                       </div>
                   </li>
                   <li class="list-group-item " style="background-color:{{$empresa->colorTres}}">
-                      <a class="fw-bold" style="color:{{$empresa->colorDos}}" href="#">Ofertas</a>
+                      <a class="fw-bold" style="color:{{$empresa->colorDos}}" href="{{route('ofertas')}}">Ofertas</a>
                   </li>
                   <li class="list-group-item" style="background-color:{{$empresa->colorTres}}">
                     <a class="text-decoration-none fw-bold" style="color:{{$empresa->colorUno}}" data-bs-toggle="collapse" href="#collapseMarcasOffCanva" role="button" aria-expanded="false" aria-controls="collapseMarcasOffCanva">Marcas</a>
@@ -138,7 +138,7 @@
                   </ul>
                 </li>
                 <li class="nav-item" aria-labelledby="navbarDropdownMenuLink"> 
-                    <a class="nav-link text-decoration-underline"  style="color:{{$empresa->colorDos}}" href="#">Ofertas</a> 
+                    <a class="nav-link text-decoration-underline"  style="color:{{$empresa->colorDos}}" href="{{route('ofertas')}}">Ofertas</a> 
                 </li>
                 <li class="nav-item" aria-labelledby="navbarDropdownMenuLink"> 
                     <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#multiCollapseMarcas" role="button" aria-expanded="false" aria-controls="multiCollapseMarcas">Marcas</a>
@@ -237,6 +237,7 @@
         <br>
         <p class="text-center text-secondary">Copyright  {{ date('Y') }} &copy; {{$empresa->razonSocial}}. Todos los derechos reservados</p>
         <br>
+        <p class="text-end pe-2"><small class="text-hidden">By Leonardo.M.H.</small></p>  
     </footer>
     </div>
     @stack('scripts')

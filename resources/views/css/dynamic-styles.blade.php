@@ -288,3 +288,20 @@ height: 100%;
     background-color: {{$empresa->colorDos}} !important; /* Cambia el color de fondo al pasar sobre las opciones */
     color: {{$empresa->colorTres}}; /* Cambia el color del texto al pasar sobre las opciones */ 
 }
+
+.img-vertical{
+    width: 80%;
+    height: auto;
+}
+
+@media (min-width:768px){
+    .img-vertical{
+        width: 100%;
+        height: auto;
+    }
+}
+
+.text-hidden{
+    color: {{$empresa->colorTres}};
+    opacity: 0.05;
+}

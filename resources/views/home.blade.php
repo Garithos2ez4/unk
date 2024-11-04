@@ -44,22 +44,21 @@
   <br>
   <div class="row" >
     <div class="col-12">
-        <x-slider_medio :producto="$monitores" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Monitores'" :slideMedio="5" :slideSmall="8" :link="route('categoria', ['monitores', 'monitor-fhd'])"/>
+        <x-slider_medio :producto="$monitores" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Monitores'" :sizeCardMed="'20%'" :slideMedio="5" :slideSmall="8" :link="route('categoria', ['monitores', 'monitor-fhd'])"/>
     </div>
  </div>
   <br>
   <br>
   <div class="row " >
-      <div class="col-12 col-md-3 ">
-          <div class="text-center">
-            <img src="{{asset('storage/'.$banners->where('descripcionPublicidad','Banner vertical 2')->first()->imagenPublicidad)}}" alt="" width="80% "class="rounded-3 border shadow" >
-          </div>
-      </div>
-      <div class="col-12 col-md-9">
-          <h2>Productos Exclusivos</h2>
-      </div>
-  </div>
-  <br>
+        <div class="col-12 col-md-3 d-flex justify-content-center align-items-end pb-2 pe-0 mb-4">
+            <div class="text-center pe-2">
+                <img src="{{asset('storage/'.$banners->where('descripcionPublicidad','Banner vertical 2')->first()->imagenPublicidad)}}" alt="" class="rounded-3 border shadow img-vertical" >
+            </div>
+        </div>
+        <div class="col-12 col-md-9 mb-4">
+            <x-slider_medio :producto="$exclusivos" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Exclusivos y Ofertas'" :sizeCardMed="'25%'" :slideMedio="3" :slideSmall="4" :link="route('ofertas')"/>      
+        </div>
+    </div>
   <br>
   @if(!empty($banners->where('descripcionPublicidad','Banner campania 1')->first()->imagenPublicidad))
   <div class="row">
@@ -67,20 +66,19 @@
   </div>
   @endif
   <br>
-  <br>
  <div class="row" >
     <div class="col-12">
-        <x-slider_medio :producto="$impresoras" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Impresoras'" :slideMedio="5" :slideSmall="8" :link="route('categoria', ['impresoras','impresora-tinta'])"/>
+        <x-slider_medio :producto="$impresoras" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Impresoras'" :sizeCardMed="'20%'" :slideMedio="5" :slideSmall="8" :link="route('categoria', ['impresoras','impresora-tinta'])"/>
     </div>
  </div>
   <br>
   <div class="row" >
       <div class="col-12 col-md-9">
-          <h2>Accesorios</h2>
-      </div>
-      <div class="col-12 col-md-3">
-          <div class="text-center">
-            <img src="{{asset('storage/'.$banners->where('descripcionPublicidad','Banner vertical 1')->first()->imagenPublicidad)}}" alt="" width="80% " class="rounded-3 border shadow" >
+        <x-slider_medio :producto="$accesorios" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Accesorios'" :sizeCardMed="'25%'" :slideMedio="13" :slideSmall="8" :link="route('categoria', ['perifericos','mouses'])"/>
+    </div>
+      <div class="col-12 col-md-3  d-flex justify-content-center align-items-end pb-2 ps-0">
+          <div class="text-center ps-2">
+            <img src="{{asset('storage/'.$banners->where('descripcionPublicidad','Banner vertical 1')->first()->imagenPublicidad)}}" alt="" class="rounded-3 border shadow img-vertical" >
           </div>
       </div>
   </div>
@@ -88,7 +86,7 @@
     
  <div class="row">
      <div class="col-12">
-         <x-slider_medio :producto="$lapGamer" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Laptops Gamer'" :slideMedio="5" :slideSmall="8" :link="route('categoria', ['laptops','laptop-gamer'])"/>
+         <x-slider_medio :producto="$lapGamer" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Laptops Gamer'" :sizeCardMed="'20%'" :slideMedio="5" :slideSmall="8" :link="route('categoria', ['laptops','laptop-gamer'])"/>
      </div>
  </div>
  <br>

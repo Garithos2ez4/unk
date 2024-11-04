@@ -52,8 +52,6 @@ Route::get('/privacidad', [PrivacidadController::class,'index'])->name('privacid
 Route::get('/garantia', [GarantiaController::class,'index'])->name('garantia');
 Route::get('/nosotros', [NosotrosController::class,'index'])->name('nosotros');
 
-Route::get('/filtro/search', [FiltroController::class,'actualizarContenido'])->name('filterproducts');
-
 Route::get('/libro-reclamaciones', [LibroReclamacionController::class,'index'])->name('libroreclamacion');
 Route::post('/nuevoreclamo', [LibroReclamacionController::class,'createReclamo'])->name('insertreclamo');
 

@@ -39,7 +39,7 @@ class CategoriaController extends Controller
             return $responseAjax;
         }
         //variables de los filtros
-        $filtros = $this->productoService->getFiltros($productos);
+        $filtros = $this->productoService->getFiltros('idGrupo',$grupo->idGrupoProducto);
         return view('categoria',[
                     'categorias' => $categorias,
                     'empresa' => $empresa,

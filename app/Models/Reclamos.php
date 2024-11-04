@@ -15,7 +15,8 @@ class Reclamos extends Model
 
     protected $guarded = ['idReclamo'];
     
-    protected $fillable = ['tipoDocumento',
+    protected $fillable = ['idReclamo',
+                            'tipoDocumento',
                             'codigo',
                             'numeroDocumento',
                             'primerNombre',

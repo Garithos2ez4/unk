@@ -57,15 +57,16 @@
         </div>
         
         <div class="col-12 col-md-6 pt-4">
-            <h6 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->nombreGrupo}}</h6>
+            <h6 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->GrupoProducto->nombreGrupo}}</h6>
             <h2 style="color:{{$empresa->colorUno}}">{{$producto->nombreProducto}}</h2>
+            <h6 class="{{$producto->estadoColor()}}">{{$producto->estadoProductoWeb}}</h6>
             <h3 style="color:{{$empresa->colorDos}}">{{$producto->precioTotalDolar($preciosService) < 1 ? 'Consultar precio por WhatsApp':'$USD '.$producto->precioTotalDolar($preciosService)}}</h3>
             <h5 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->precioTotalSol($preciosService) < 1 ? '':'S/.PEN '.$producto->precioTotalSol($preciosService)}} </h5>
             <p class="mb-0"><i class="bi bi-shield-check"></i> Garantía de {{$producto->garantia}}.</p>
             <p class="mb-0"><i class='bx bxs-truck'></i> Preguntar por envio y disponibilidad.</p>
-            <p><i class="bi bi-question-circle"></i> Stock <span class="text-lowercase">{{$producto->estadoProductoWeb}}</span></p>
+            <p><i class="bi bi-question-circle"></i> Stock {{array_sum($producto->Inventario->pluck('stock')->toArray())}} en existencias.</p>
             <br>
-            <p class="mb-0"><strong>Marca:</strong> {{$producto->nombreMarca}}</p>
+            <p class="mb-0"><strong>Marca:</strong> {{$producto->MarcaProducto->nombreMarca}}</p>
             <p class="mb-0"><strong>Modelo:</strong> {{$producto->modelo}}</p>
             <p class="mb-0"><strong>P/N:</strong> {{$producto->partNumber}}</p>
             <br>
@@ -139,7 +140,7 @@
     </div>
     <br>
     <div class="row">
-        <x-slider_medio :producto="$productosCategoria" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Productos similares'" :slideMedio="5" :slideSmall="8" :link="route('categoria', [$producto->GrupoProducto->CategoriaProducto->slugCategoria ,$producto->GrupoProducto->slugGrupo])"/>
+        <x-slider_medio :producto="$productosCategoria" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Productos similares'" :sizeCardMed="'20%'" :slideMedio="5" :slideSmall="8" :link="route('categoria', [$producto->GrupoProducto->CategoriaProducto->slugCategoria ,$producto->GrupoProducto->slugGrupo])"/>
     </div>
     <br>
 </div>

@@ -18,22 +18,30 @@ use App\Repositories\ProductoRepository;
 use App\Repositories\ProductoRepositoryInterface;
 use App\Repositories\PublicidadRepository;
 use App\Repositories\PublicidadRepositoryInterface;
+use App\Repositories\ReclamosRepository;
+use App\Repositories\ReclamosRepositoryInterface;
 use App\Repositories\registroUpdateRepository;
 use App\Repositories\registroUpdateRepositoryInterface;
 use App\Repositories\TipoProductoRepository;
 use App\Repositories\TipoProductoRepositoryInterface;
+use App\Services\BuscarService;
+use App\Services\BuscarServiceInterface;
 use App\Services\CategoriaService;
 use App\Services\CategoriaServiceInterface;
 use App\Services\HeaderService;
 use App\Services\HeaderServiceInterface;
 use App\Services\HomeService;
 use App\Services\HomeServiceInterface;
+use App\Services\MarcaService;
+use App\Services\MarcaServiceInterface;
 use App\Services\MedioDePagoService;
 use App\Services\MedioDePagoServiceInterface;
 use App\Services\PreciosService;
 use App\Services\PreciosServiceInterface;
 use App\Services\ProductoService;
 use App\Services\ProductoServiceInterface;
+use App\Services\ReclamacionService;
+use App\Services\ReclamacionServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -53,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductoRepositoryInterface::class,ProductoRepository::class);
         $this->app->bind(CuentasTransferenciaRepositoryInterface::class,CuentasTransferenciaRepository::class);
         $this->app->bind(GrupoProductoRepositoryInterface::class,GrupoProductoRepository::class);
+        $this->app->bind(ReclamacionServiceInterface::class,ReclamacionService::class);
 
         $this->app->bind(HeaderServiceInterface::class,HeaderService::class);
         $this->app->bind(HomeServiceInterface::class,HomeService::class);
@@ -60,6 +69,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(MedioDePagoServiceInterface::class,MedioDePagoService::class);
         $this->app->bind(CategoriaServiceInterface::class,CategoriaService::class);
         $this->app->bind(ProductoServiceInterface::class,ProductoService::class);
+        $this->app->bind(MarcaServiceInterface::class,MarcaService::class);
+        $this->app->bind(BuscarServiceInterface::class,BuscarService::class);
+        $this->app->bind(ReclamosRepositoryInterface::class,ReclamosRepository::class);
     }
 
     /**

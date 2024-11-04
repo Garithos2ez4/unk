@@ -44,14 +44,15 @@
                         <p class="card-categoria d-none">{{ $producto->GrupoProducto->idCategoria }}</p>
                         <p class="card-tipo d-none">{{ $producto->GrupoProducto->idTipoProducto }}</p>
                     </div>
-                    <div class="row">
+                    <div class="row ">
                         <div class="col-md-12 text-start">
                             <p class="mb-0 fs-card-text truncar-one-lineas">
                                 <strong style="color:{{ $empres->colorDos }}">Precio:</strong>
                                 <span class="precio-card">{{ $producto->precioTotalSol($preciosService) < 1 ? 'Consultar' : 'S/.'.$producto->precioTotalSol($preciosService) }}</span>
                                 <span class="fw-lighter">{{ $producto->precioTotalDolar($preciosService) < 1 ? '' : '($'.$producto->precioTotalDolar($preciosService).')' }}</span>
                             </p>
-                            <p class="mt-0 fs-card-text"><strong style="color:{{ $empres->colorDos }}">Garantia:</strong> {{ $producto->garantia }}</p>
+                            <p class="mt-0 mb-0 fs-card-text"><strong style="color:{{ $empres->colorDos }}">Garantia:</strong> {{ $producto->garantia }}</p>
+                            <p class="mt-0 mb-0 fs-card-text "><strong style="color:{{ $empres->colorDos }}">Stock:</strong> {{ array_sum($producto->Inventario->pluck('stock')->toArray())}} en existencias.</p>
                         </div>
                     </div>
                 </div>

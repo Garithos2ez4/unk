@@ -89,6 +89,11 @@ class Producto extends Model
     {
         return $this->belongsTo(Preveedor::class, 'idProveedor', 'idProveedor');
     }
+
+    public function Inventario()
+    {
+        return $this->hasMany(Inventario::class, 'idProducto', 'idProducto');
+    }
     
     public function Caracteristicas_Producto()
     {

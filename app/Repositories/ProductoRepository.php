@@ -39,17 +39,6 @@ class ProductoRepository implements ProductoRepositoryInterface
         $query->where('estadoProductoWeb','<>','DESCONTINUADO');
         $query->where($column,'=',$data);
         if($querys){
-            if(isset($querys['tipos']) || isset($querys['categorias'])){
-                $query->join('GrupoProducto','GrupoProducto.idGrupoProducto','=','Producto.idGrupo');
-                if (isset($querys['tipos'])) {
-                    $query->whereIn('GrupoProducto.idTipoProducto', $querys['tipos']);
-                }
-    
-                if (isset($querys['categorias'])) {
-                    $query->whereIn('GrupoProducto.idCategoria', $querys['categorias']);
-                }
-            }
-
             if (isset($querys['caracteristicas'])) {
                 $query->join('Caracteristicas_Producto','Caracteristicas_Producto.idProducto','=','Producto.idProducto')
                     ->whereIn('Caracteristicas_Producto.caracteristicaProducto',$querys['caracteristicas']);
@@ -61,6 +50,44 @@ class ProductoRepository implements ProductoRepositoryInterface
 
             if (isset($querys['marcas'])) {
                 $query->whereIn('idMarca', $querys['marcas']);
+            }
+
+            if (isset($querys['grupos'])) {
+                $query->whereIn('idGrupo', $querys['grupos']);
+            }
+
+            if(isset($querys['orden'])){
+                $query->orderBy('precioDolar', $querys['orden']);
+            }
+
+            if(isset($querys['ordensmall'])){
+                $query->orderBy('precioDolar', $querys['ordensmall']);
+            }
+
+        }
+        return   $query->paginate($cant);
+    }
+
+    public function searchPaginationByColumn($column,$data,$cant,array $querys){
+        $query = Producto::query();
+        $query->where('estadoProductoWeb','<>','DESCONTINUADO');
+        $query->where($column,'LIKE', '%' . $data . '%');
+        if($querys){
+            if (isset($querys['caracteristicas'])) {
+                $query->join('Caracteristicas_Producto','Caracteristicas_Producto.idProducto','=','Producto.idProducto')
+                    ->whereIn('Caracteristicas_Producto.caracteristicaProducto',$querys['caracteristicas']);
+            }
+
+            if (isset($querys['dispo'])) {
+                $query->whereIn('estadoProductoWeb', $querys['dispo']);
+            }
+
+            if (isset($querys['marcas'])) {
+                $query->whereIn('idMarca', $querys['marcas']);
+            }
+
+            if (isset($querys['grupos'])) {
+                $query->whereIn('idGrupo', $querys['grupos']);
             }
 
             if(isset($querys['orden'])){
