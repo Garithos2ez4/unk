@@ -33,8 +33,14 @@ class ProductoService implements ProductoServiceInterface
 
     public function getProductosByCategoria($idCategoria,$cantidad){
         $categoria = $this->categoriaRepository->getOne('idCategoria',$idCategoria);
-        $productos = $categoria->GrupoProducto->pluck('Producto')->flatten()->shuffle()->take($cantidad);
-        return $productos;
+        $productos = $categoria->GrupoProducto->pluck('Producto')->flatten();
+
+        $productosFiltrados = $productos->filter(function ($producto) {
+            return $producto->estadoProductoWeb !== 'DESCONTINUADO';
+        });
+
+        $productosFinales = $productosFiltrados->shuffle()->take($cantidad);
+        return $productosFinales;
     }
     public function getAjaxListaProductos(Request $request, Empresa $empresa, LengthAwarePaginator $productos)
     {

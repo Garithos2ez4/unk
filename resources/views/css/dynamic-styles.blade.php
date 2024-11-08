@@ -305,3 +305,18 @@ height: 100%;
     color: {{$empresa->colorTres}};
     opacity: 0.05;
 }
+
+/* Estilo de los botones del acordeón (los que abren y cierran los ítems) */
+{{-- .accordion-button {
+    background-color: {{$empresa->colorDos}};  /* Fondo azul */
+    color: white;               /* Color de texto blanco */
+    font-weight: bold;          /* Texto en negrita */
+    border-radius: 5px;         /* Bordes redondeados */
+} --}}
+
+/* Estilo cuando el botón del acordeón está activo (cuando está abierto) */
+.accordion-button:not(.collapsed) {
+    background-color: {{$empresa->colorTres}};  /* Fondo más oscuro cuando está abierto */
+    color: #ffffff;             /* Texto blanco */
+    box-shadow: 0; /* Sombra suave */
+}
