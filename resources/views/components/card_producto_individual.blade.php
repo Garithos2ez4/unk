@@ -17,7 +17,6 @@
                     <p class="mb-0 fs-card-text truncar-one-lineas"><strong style="color:{{ $empres->colorDos }}">Precio:</strong> {{ $producto->precioTotalSol($preciosService) < 1 ? 'Consultar' : 'S/.'.$producto->precioTotalSol($preciosService)}} 
                     <span class="fw-lighter">{{ $producto->precioTotalDolar($preciosService) < 1 ? '' : '($'.$producto->precioTotalDolar($preciosService).')'}}</span></p>
                     <p class="mt-0 mb-0 fs-card-text "><strong style="color:{{ $empres->colorDos }}">Garantía:</strong> {{ $producto->garantia }}</p>
-                    <p class="mt-0 mb-0 fs-card-text "><strong style="color:{{ $empres->colorDos }}">Stock:</strong> {{ array_sum($producto->Inventario->pluck('stock')->toArray())}} en existencias.</p>
                 </div>
             </div>
         </div>

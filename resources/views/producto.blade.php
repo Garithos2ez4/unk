@@ -64,7 +64,6 @@
             <h5 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->precioTotalSol($preciosService) < 1 ? '':'S/.PEN '.$producto->precioTotalSol($preciosService)}} </h5>
             <p class="mb-0"><i class="bi bi-shield-check"></i> Garantía de {{$producto->garantia}}.</p>
             <p class="mb-0"><i class='bx bxs-truck'></i> Preguntar por envio y disponibilidad.</p>
-            <p><i class="bi bi-question-circle"></i> Stock {{array_sum($producto->Inventario->pluck('stock')->toArray())}} en existencias.</p>
             <br>
             <p class="mb-0"><strong>Marca:</strong> {{$producto->MarcaProducto->nombreMarca}}</p>
             <p class="mb-0"><strong>Modelo:</strong> {{$producto->modelo}}</p>
