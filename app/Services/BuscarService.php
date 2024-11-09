@@ -24,9 +24,19 @@ class BuscarService implements BuscarServiceInterface
                                                     $producto->precioTotalDolar = $producto->precioTotalDolar($this->preciosService);
                                                     $producto->precioTotalSol = $producto->precioTotalSol($this->preciosService);
                                                     $producto->imageUrls = $producto->publicImages();
-                                                    $producto->stock = array_sum($producto->Inventario->pluck('stock')->toArray());
                                                     return $producto;
                                                 });
+        if($productos->isEmpty()){
+            $productos = $this->productoRepository->searchByColumn('modelo',$query)
+                                                    ->take(4)
+                                                    ->map(function ($producto) {
+                                                        // Agregar las URLs de las im��genes al producto
+                                                        $producto->precioTotalDolar = $producto->precioTotalDolar($this->preciosService);
+                                                        $producto->precioTotalSol = $producto->precioTotalSol($this->preciosService);
+                                                        $producto->imageUrls = $producto->publicImages();
+                                                        return $producto;
+                                                    });
+        }
         return $productos;
     }
 }

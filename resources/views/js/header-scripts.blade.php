@@ -81,10 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         let img = document.createElement('img');
                         
                         a.textContent = item.nombreProducto;
-                        b.innerHTML = '<span><strong class="text-danger">Precio</strong>: ' + ((item.precioTotalDolar < 1) ? 'Consultar' : '$' + item.precioTotalDolar) + ' <em class="text-secondary">' + ((item.precioTotalSol < 1) ? '' : 'S/.' + item.precioTotalSol) +'</em></span>'+
-                                        '<br>' +
-                                        '<span><strong class="text-danger">Stock</strong>: ' + item.stock + ' en almac&eacute;n' +'</span>';
-                        
+                        b.innerHTML = '<span><strong class="text-danger">Precio</strong>: ' + ((item.precioTotalDolar < 1) ? 'Consultar' : '$' + item.precioTotalDolar) + ' <em class="text-secondary">' + ((item.precioTotalSol < 1) ? '' : 'S/.' + item.precioTotalSol) +'</em></span>';                        
                         if (item.imageUrls.length > 0) {
                             img.src = item.imageUrls[0]; // Usa la primera imagen del array
                             img.classList.add('me-0');

@@ -40,6 +40,10 @@ class BuscarController extends Controller
            session(['buscar' => $obt]);
         }
         $productos = $this->productoService->searchProductsFilter('nombreProducto',session()->get('buscar',$obt),32,$request);
+
+        if($productos->isEmpty()){
+            $productos = $this->productoService->searchProductsFilter('modelo',session()->get('buscar',$obt),32,$request);
+        }
         
         //Lista de productos paginados
         if($request->query('page') || $request->query('filtro')){
@@ -68,16 +72,6 @@ class BuscarController extends Controller
 
         $results = $this->buscarService->searchProducts($query);
     
-        //  $results = Producto::where('nombreProducto', 'LIKE', "%{$query}%")
-        //         ->take(4) // Limitar a 5 resultados
-        //         ->get()
-                // ->map(function ($producto) {
-                //     // Agregar las URLs de las im��genes al producto
-                //     $producto->precioTotalDolar = $producto->precioTotalDolar();
-                //     $producto->precioTotalSol = $producto->precioTotalSol();
-                //     $producto->imageUrls = $producto->publicImages();
-                //     return $producto;
-                // });
                 
         return response()->json($results);
     }

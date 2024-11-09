@@ -317,6 +317,6 @@ height: 100%;
 /* Estilo cuando el botón del acordeón está activo (cuando está abierto) */
 .accordion-button:not(.collapsed) {
     background-color: {{$empresa->colorTres}};  /* Fondo más oscuro cuando está abierto */
-    color: #ffffff;             /* Texto blanco */
+    color: {{$empresa->colorUno}};             /* Texto blanco */
     box-shadow: 0; /* Sombra suave */
 }
