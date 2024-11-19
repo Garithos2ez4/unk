@@ -60,8 +60,8 @@
             <h6 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->GrupoProducto->nombreGrupo}}</h6>
             <h2 style="color:{{$empresa->colorUno}}">{{$producto->nombreProducto}}</h2>
             <h6 class="{{$producto->estadoColor()}}">{{$producto->estadoProductoWeb}}</h6>
-            <h3 style="color:{{$empresa->colorDos}}">{{$producto->precioTotalDolar($preciosService) < 1 ? 'Consultar precio por WhatsApp':'$USD '.$producto->precioTotalDolar($preciosService)}}</h3>
-            <h5 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->precioTotalSol($preciosService) < 1 ? '':'S/.PEN '.$producto->precioTotalSol($preciosService)}} </h5>
+            <h3 style="color:{{$empresa->colorDos}}">{{$producto->precioTotalDolar($preciosService) < 1 ? 'Consultar precio por WhatsApp':'S/.PEN '.$producto->precioTotalSol($preciosService)}}</h3>
+            <h5 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->precioTotalSol($preciosService) < 1 ? '':'$USD '.$producto->precioTotalDolar($preciosService)}} </h5>
             <p class="mb-0"><i class="bi bi-shield-check"></i> Garantía de {{$producto->garantia}}.</p>
             <p class="mb-0"><i class='bx bxs-truck'></i> Preguntar por envio y disponibilidad.</p>
             <br>
