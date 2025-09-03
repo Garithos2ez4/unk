@@ -103,6 +103,54 @@
               </div>
             </div>
         <br>
+{{-- Bloque de videos lado a lado --}}
+@if(!empty($producto->url_youtube) || !empty($producto->url_local))
+    <div class="row mb-4 align-items-center">
+        {{-- Video del producto --}}
+        @if(!empty($producto->url_youtube))
+            @php
+                preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $producto->url_youtube, $matches);
+                $videoId = $matches[1] ?? null;
+            @endphp
+            @if($videoId)
+                <div class="col-md-6 text-center mb-3">
+                    <h4>Video del producto</h4>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/{{ $videoId }}" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            @endif
+        @endif
+
+        {{-- Video local --}}
+        @if(!empty($producto->url_local))
+            @php
+                preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $producto->url_local, $matchesLocal);
+                $videoIdLocal = $matchesLocal[1] ?? null;
+            @endphp
+            @if($videoIdLocal)
+                <div class="col-md-6 text-center mb-3">
+                    <h4>Video de nuestro canal</h4>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/{{ $videoIdLocal }}" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            @endif
+        @endif
+    </div>
+@endif
+
+
         <div class="col-12 col-md-4">
             <div class="row border-bottom border-dark">
                 <h4>Especificaciones</h4>
