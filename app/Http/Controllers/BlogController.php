@@ -9,17 +9,23 @@ use App\Services\HeaderService;
 
 class BlogController extends Controller
 {
+    protected $headerService;
+
+    public function __construct(HeaderService $headerService)
+    {
+        $this->headerService = $headerService;
+    }
+
     public function index(){
         //Variables propias del controlador
         
         //Variables para el header,nav y footer
-        $header = new HeaderService();
-        $categorias = $header->obtenerCategorias();
-        $empresa = $header->obtenerEmpresa();
-        $marcas = $header->obtenerMarcas();
-        $tipos = $header->obtenerTipo();
-        $redes = $header->obtenerLinkRedes();
-        $tipoCambio = $header->obtenerCambioDolar();
+        $categorias = $this->headerService->obtenerCategorias();
+        $empresa = $this->headerService->obtenerEmpresa();
+        $marcas = $this->headerService->obtenerMarcas();
+        $tipos = $this->headerService->obtenerTipo();
+        $redes = $this->headerService->obtenerLinkRedes();
+        $tipoCambio = $this->headerService->obtenerCambioDolar();
         
         return view('blog',[
                     'categorias' => $categorias,

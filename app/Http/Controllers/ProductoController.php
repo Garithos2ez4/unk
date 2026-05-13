@@ -32,7 +32,13 @@ class ProductoController extends Controller
         $producto = $this->productoService->getOneProducto($product);
         $miUrl = URL::current();
 
-        $productosCategoria = $this->productoService->getProductosByCategoria($producto->GrupoProducto->idCategoria,17);
+        $productosCategoria = $this->productoService->getProductosSimilares(
+            $producto->idMarca,
+            $producto->modelo,
+            $producto->GrupoProducto->idCategoria,
+            $producto->idProducto,
+            17
+        );
 
         return view('producto',[
                     'categorias' => $categorias,
