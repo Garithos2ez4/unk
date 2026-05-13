@@ -42,6 +42,30 @@ class ProductoService implements ProductoServiceInterface
         $productosFinales = $productosFiltrados->shuffle()->take($cantidad);
         return $productosFinales;
     }
+
+    public function getProductosSimilares($idMarca, $modelo, $idCategoria, $idExclude, $cantidad)
+    {
+        // 1. Intentar obtener por marca y modelo similar
+        $similares = $this->productoRepository->getSimilares($idMarca, $modelo, $cantidad, $idExclude);
+
+        // 2. Si no hay suficientes, completar con productos de la misma categoría
+        if ($similares->count() < $cantidad) {
+            $faltantes = $cantidad - $similares->count();
+            $idsYaIncluidos = $similares->pluck('idProducto')->toArray();
+            $idsYaIncluidos[] = $idExclude; // Excluir también el producto actual
+
+            $categoria = $this->categoriaRepository->getOne('idCategoria', $idCategoria);
+            $productosCategoria = $categoria->GrupoProducto->pluck('Producto')->flatten();
+
+            $extras = $productosCategoria->filter(function ($prod) use ($idsYaIncluidos) {
+                return $prod->estadoProductoWeb !== 'DESCONTINUADO' && !in_array($prod->idProducto, $idsYaIncluidos);
+            })->shuffle()->take($faltantes);
+
+            $similares = $similares->concat($extras);
+        }
+
+        return $similares;
+    }
     public function getAjaxListaProductos(Request $request, Empresa $empresa, LengthAwarePaginator $productos)
     {
         $colmedio = $request->query('colmedio');

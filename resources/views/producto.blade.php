@@ -12,8 +12,8 @@
                 <div class="col-2 d-none d-md-block">
 
                     @php
-                        // Calculamos el slide inicial basado en la cantidad de imágenes
-                        $slideOffset = isset($imagesCount) ? $imagesCount : 4; // Asume 4 imágenes por defecto
+                    // Calculamos el slide inicial basado en la cantidad de imágenes
+                    $slideOffset = isset($imagesCount) ? $imagesCount : 4; // Asume 4 imágenes por defecto
                     @endphp
                     <a type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="{{$producto->displayImg($producto->publicImages()[0])}}active" aria-current="true" aria-label="Slide 1">
                         <img src="{{$producto->publicImages()[0]}}" class="d-block w-100 productimg border" alt="...">
@@ -28,42 +28,42 @@
                     </a>
                     <!-- Miniaturas en el lado izquierdo -->
                     @if($producto->videoUrl1)
-                        <a type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $slideOffset }}" aria-label="Slide 5">
-                            <div class="position-relative">
-                                <img src="{{ asset('storage/'.$empresa->logo) }}" class="d-block w-100 productimg border" style="opacity: 0.3;" alt="...">
-                                <i class="bi bi-youtube position-absolute top-50 start-50 translate-middle" style="font-size: 2rem; color: rgba(255, 0, 0, 1.0);"></i>
-                            </div>
-                        </a>
-                        @php $slideOffset++; @endphp
+                    <a type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $slideOffset }}" aria-label="Slide 5">
+                        <div class="position-relative">
+                            <img src="{{ asset('storage/'.$empresa->logo) }}" class="d-block w-100 productimg border" style="opacity: 0.3;" alt="...">
+                            <i class="bi bi-youtube position-absolute top-50 start-50 translate-middle" style="font-size: 2rem; color: rgba(255, 0, 0, 1.0);"></i>
+                        </div>
+                    </a>
+                    @php $slideOffset++; @endphp
                     @endif
 
                     @if($producto->videoUrl2)
-                        <a type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $slideOffset }}" aria-label="Slide 6">
-                            <div class="position-relative">
-                                <img src="{{ asset('storage/' . $producto->MarcaProducto->imagenMarca) }}" class="d-block w-100 productimg border" style="opacity: 0.3;" alt="...">                           
-                                <i class="bi bi-youtube position-absolute top-50 start-50 translate-middle" style="font-size: 1rem; color: rgba(255, 0, 0, 1.0);"></i>
-                            </div>
-                        </a>
-                    @endif                   
+                    <a type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $slideOffset }}" aria-label="Slide 6">
+                        <div class="position-relative">
+                            <img src="{{ asset('storage/' . $producto->MarcaProducto->imagenMarca) }}" class="d-block w-100 productimg border" style="opacity: 0.3;" alt="...">
+                            <i class="bi bi-youtube position-absolute top-50 start-50 translate-middle" style="font-size: 1rem; color: rgba(255, 0, 0, 1.0);"></i>
+                        </div>
+                    </a>
+                    @endif
                 </div>
                 <div class="col-12 col-md-10">
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
-                      <div class="carousel-inner border shadow">
-                        <div class="carousel-item active">
-                          <img src="{{$producto->publicImages()[0]}}" class="d-block w-100 {{$producto->displayImg($producto->publicImages()[0])}}" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                          <img src="{{$producto->publicImages()[1]}}" class="d-block w-100 {{$producto->displayImg($producto->publicImages()[1])}}" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                          <img src="{{$producto->publicImages()[2]}}" class="d-block w-100 {{$producto->displayImg($producto->publicImages()[2])}}" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                          <img src="{{$producto->publicImages()[3]}}" class="d-block w-100 {{$producto->displayImg($producto->publicImages()[3])}}" alt="...">
-                        </div>
-                        <!-- Video 1 -->
-                        @if($producto->videoUrl1)
-                            <div class="carousel-item justify-content-center" >
+                        <div class="carousel-inner border shadow">
+                            <div class="carousel-item active">
+                                <img src="{{$producto->publicImages()[0]}}" class="d-block w-100 {{$producto->displayImg($producto->publicImages()[0])}}" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{$producto->publicImages()[1]}}" class="d-block w-100 {{$producto->displayImg($producto->publicImages()[1])}}" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{$producto->publicImages()[2]}}" class="d-block w-100 {{$producto->displayImg($producto->publicImages()[2])}}" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{$producto->publicImages()[3]}}" class="d-block w-100 {{$producto->displayImg($producto->publicImages()[3])}}" alt="...">
+                            </div>
+                            <!-- Video 1 -->
+                            @if($producto->videoUrl1)
+                            <div class="carousel-item justify-content-center">
                                 <div class="ratio ratio-16x9">
                                     <iframe id="video1"
                                         src="{{ $producto->getYoutubeEmbed($producto->videoUrl1) }}?rel=0&mute=1"
@@ -71,10 +71,10 @@
                                         title="Video 1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                                 </div>
                             </div>
-                        @endif
+                            @endif
 
-                        <!-- Video 2 -->
-                        @if($producto->videoUrl2)
+                            <!-- Video 2 -->
+                            @if($producto->videoUrl2)
                             <div class="carousel-item justify-content-center">
                                 <div class="ratio ratio-16x9">
                                     <iframe id="video2"
@@ -83,28 +83,28 @@
                                         title="Video 2" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                                 </div>
                             </div>
-                        @endif
+                            @endif
 
 
-                      </div>
-                      <div class="d-block d-sm-none">
-                          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                          </button>
-                          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                          </button>
-                      </div>
+                        </div>
+                        <div class="d-block d-sm-none">
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="col-12">
-                    
+
                 </div>
             </div>
         </div>
-        
+
         <div class="col-12 col-md-6 pt-4">
             <h6 style="color:{{$empresa->colorUno}};opacity:0.5">{{$producto->GrupoProducto->nombreGrupo}}</h6>
             <h2 style="color:{{$empresa->colorUno}}">{{$producto->nombreProducto}}</h2>
@@ -130,74 +130,75 @@
     <br>
     <div class="col-12 d-block border-bottom border-top pt-3 d-sm-none mb-2">
         <a class="text-decoration-none text-empresa-uno fs-5 fw-bolder w-100 d-inline-flex" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottomDesc" aria-controls="offcanvasBottomDesc">
-            <p class="w-75"> Información adicional</p><p class="text-end w-25"><i class="bi bi-exclamation-circle"></i></p>
+            <p class="w-75"> Información adicional</p>
+            <p class="text-end w-25"><i class="bi bi-exclamation-circle"></i></p>
         </a>
     </div>
     <br>
     <div class="row">
         <br>
         <div class="offcanvas offcanvas-bottom h-75" tabindex="-1" id="offcanvasBottomDesc" aria-labelledby="offcanvasBottomLabel">
-              <div class="offcanvas-header">
+            <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasBottomLabel">Información adicional</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-              </div>
-              <div class="offcanvas-body">
-                <p class="">
-                @if(strpos($producto->descripcionProducto, "\n") !== false || strpos($producto->descripcionProducto, "\r\n") !== false)
-                    {!! nl2br(e($producto->descripcionProducto)) !!}
-                @else
-                    {{ $producto->descripcionProducto }}
-                @endif
-                </p>
-              </div>
             </div>
+            <div class="offcanvas-body">
+                <p class="">
+                    @if(strpos($producto->descripcionProducto, "\n") !== false || strpos($producto->descripcionProducto, "\r\n") !== false)
+                    {!! nl2br(e($producto->descripcionProducto)) !!}
+                    @else
+                    {{ $producto->descripcionProducto }}
+                    @endif
+                </p>
+            </div>
+        </div>
         <br>
-{{-- Bloque de videos lado a lado --}}
-@if(!empty($producto->url_youtube) || !empty($producto->url_local))
-    <div class="row mb-4 align-items-center">
-        {{-- Video del producto --}}
-        @if(!empty($producto->url_youtube))
+        {{-- Bloque de videos lado a lado --}}
+        @if(!empty($producto->url_youtube) || !empty($producto->url_local))
+        <div class="row mb-4 align-items-center">
+            {{-- Video del producto --}}
+            @if(!empty($producto->url_youtube))
             @php
-                preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $producto->url_youtube, $matches);
-                $videoId = $matches[1] ?? null;
+            preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $producto->url_youtube, $matches);
+            $videoId = $matches[1] ?? null;
             @endphp
             @if($videoId)
-                <div class="col-md-6 text-center mb-3">
-                    <h4>Video del producto</h4>
-                    <div class="ratio ratio-16x9">
-                        <iframe src="https://www.youtube.com/embed/{{ $videoId }}" 
-                            title="YouTube video player" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
+            <div class="col-md-6 text-center mb-3">
+                <h4>Video del producto</h4>
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/{{ $videoId }}"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
                 </div>
+            </div>
             @endif
-        @endif
+            @endif
 
-        {{-- Video local --}}
-        @if(!empty($producto->url_local))
+            {{-- Video local --}}
+            @if(!empty($producto->url_local))
             @php
-                preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $producto->url_local, $matchesLocal);
-                $videoIdLocal = $matchesLocal[1] ?? null;
+            preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $producto->url_local, $matchesLocal);
+            $videoIdLocal = $matchesLocal[1] ?? null;
             @endphp
             @if($videoIdLocal)
-                <div class="col-md-6 text-center mb-3">
-                    <h4>Video de nuestro canal</h4>
-                    <div class="ratio ratio-16x9">
-                        <iframe src="https://www.youtube.com/embed/{{ $videoIdLocal }}" 
-                            title="YouTube video player" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
+            <div class="col-md-6 text-center mb-3">
+                <h4>Video de nuestro canal</h4>
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/{{ $videoIdLocal }}"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
                 </div>
+            </div>
             @endif
+            @endif
+        </div>
         @endif
-    </div>
-@endif
 
 
         <div class="col-12 col-md-4">
@@ -213,7 +214,7 @@
             </div>
         </div>
         <div class="col-md-1">
-            
+
         </div>
         <div class="col-md-7 d-none d-sm-block">
             <div class="row border-bottom border-dark">
@@ -221,29 +222,29 @@
             </div>
             <div class="row" style="max-height: 800px;overflow-y: auto;">
                 <p class="">
-                @if(strpos($producto->descripcionProducto, "\n") !== false || strpos($producto->descripcionProducto, "\r\n") !== false)
+                    @if(strpos($producto->descripcionProducto, "\n") !== false || strpos($producto->descripcionProducto, "\r\n") !== false)
                     {!! nl2br(e($producto->descripcionProducto)) !!}
-                @else
+                    @else
                     {{ $producto->descripcionProducto }}
-                @endif
+                    @endif
                 </p>
             </div>
         </div>
     </div>
-    
+
     <div class="row">
-        
+
     </div>
     <br>
     <div class="row">
-        <x-slider_medio :producto="$productosCategoria" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Productos similares'" :sizeCardMed="'20%'" :slideMedio="5" :slideSmall="8" :link="route('categoria', [$producto->GrupoProducto->CategoriaProducto->slugCategoria ,$producto->GrupoProducto->slugGrupo])"/>
+        <x-slider_medio :producto="$productosCategoria" :empre="$empresa" :cambio="$tipoCambio" :titulo="'Productos similares'" :sizeCardMed="'20%'" :slideMedio="5" :slideSmall="8" :link="route('categoria', [$producto->GrupoProducto->CategoriaProducto->slugCategoria ,$producto->GrupoProducto->slugGrupo])" />
     </div>
     <br>
 </div>
 <script>
     const carousel = document.querySelector('#carouselExampleIndicators');
 
-    carousel.addEventListener('slid.bs.carousel', function () {
+    carousel.addEventListener('slid.bs.carousel', function() {
         const iframes = document.querySelectorAll('.yt-frame');
         iframes.forEach(iframe => {
             const src = iframe.getAttribute('src').split('?')[0];

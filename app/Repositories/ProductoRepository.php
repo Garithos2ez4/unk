@@ -109,6 +109,17 @@ class ProductoRepository implements ProductoRepositoryInterface
         return Producto::with('Caracteristicas_Producto.Caracteristicas')->where('estadoProductoWeb','<>','DESCONTINUADO')->where($column,'=',$data)->get();
     }
 
+    public function getSimilares($idMarca, $modelo, $limit, $idExclude)
+    {
+        return Producto::where('idMarca', $idMarca)
+            ->where('modelo', 'LIKE', '%' . $modelo . '%')
+            ->where('idProducto', '<>', $idExclude)
+            ->where('estadoProductoWeb', '<>', 'DESCONTINUADO')
+            ->inRandomOrder()
+            ->take($limit)
+            ->get();
+    }
+
     public function create(array $data){
         return Producto::create($data);
     }

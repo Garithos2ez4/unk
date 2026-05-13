@@ -11,6 +11,7 @@ interface ProductoRepositoryInterface {
     public function searchPaginationByColumn($column,$data,$cant,array $querys);
     public function getAllByCategoria($idCategoria);
     public function getSpectsByColumn($column,$data);
+    public function getSimilares($idMarca, $modelo, $limit, $idExclude);
     public function create(array $data);
     public function update($id, array $data);
 }
