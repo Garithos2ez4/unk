@@ -76,7 +76,9 @@ class PreciosService implements PreciosServiceInterface
 
     private function getTipoCambioPorProducto($producto)
     {
-        if($producto->usar_tc_fijo){
+        // En el sistema, usar_tc_fijo = false (0) significa que se usa el TC Fijo
+        // usar_tc_fijo = true (1) significa que se usa el TC SUNAT
+        if(!$producto->usar_tc_fijo){
             if (!empty($producto->tc_fijo) && $producto->tc_fijo > 0) {
                 return $producto->tc_fijo;
             }
