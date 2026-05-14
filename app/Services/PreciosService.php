@@ -14,63 +14,67 @@ class PreciosService implements PreciosServiceInterface
         $this->headerService = $headerService;
     }
 
-    public function getIgv($precio,$tipo,$producto)
+    public function getIgv($precio, $tipo, $producto)
     {
-        $igv = Calculadora::where('idCalculadora',1)
-                        ->value('igv');
+        $igv = Calculadora::where('idCalculadora', 1)
+            ->value('igv');
 
-        $precioIgv = $this->validateMoney($precio,$tipo,$producto)
-                    * $this->porcent($igv);
+        $precioIgv = $this->validateMoney($precio, $tipo, $producto)
+            * $this->porcent($igv);
 
         return $precioIgv;
     }
 
 
-    public function getPrecioSinFacturar($precio,$grupo,$tipo,$producto){
-        $comisiones = Comision::where('idGrupoProducto','=',$grupo)->get();
+    public function getPrecioSinFacturar($precio, $grupo, $tipo, $producto)
+    {
+        $comisiones = Comision::where('idGrupoProducto', '=', $grupo)->get();
 
-        foreach($comisiones as $comision){
-            if($precio > $comision->RangoPrecio->rangoMin && $precio < $comision->RangoPrecio->rangoMax){
-                return $this->getIgv($precio,$tipo,$producto) * $this->porcent($comision->comision);
-
+        foreach ($comisiones as $comision) {
+            if ($precio > $comision->RangoPrecio->rangoMin && $precio < $comision->RangoPrecio->rangoMax) {
+                return $this->getIgv($precio, $tipo, $producto) * $this->porcent($comision->comision);
             }
         }
     }
 
 
-    public function getPrecioFacturado($precio,$grupo,$tipo,$producto)
+    public function getPrecioFacturado($precio, $grupo, $tipo, $producto)
     {
-        $facturacion = Calculadora::where('idCalculadora',1)
-                                ->value('facturacion');
+        $facturacion = Calculadora::where('idCalculadora', 1)
+            ->value('facturacion');
 
-        return $this->getPrecioSinFacturar($precio,$grupo,$tipo,$producto)
+        return $this->getPrecioSinFacturar($precio, $grupo, $tipo, $producto)
             * $this->porcent($facturacion);
     }
 
 
-    public function getPromedio($precio,$grupo,$tipo,$producto){
-        return ($this->getPrecioSinFacturar($precio,$grupo,$tipo,$producto) + $this->getPrecioFacturado($precio,$grupo,$tipo,$producto))/2;
+    public function getPromedio($precio, $grupo, $tipo, $producto)
+    {
+        return ($this->getPrecioSinFacturar($precio, $grupo, $tipo, $producto) + $this->getPrecioFacturado($precio, $grupo, $tipo, $producto)) / 2;
     }
 
-    public function getEspecialPrice($precio,$tipo,$producto){
-            $totalPrecio = $this->getIgv($precio,$tipo,$producto) ;
+    public function getEspecialPrice($precio, $tipo, $producto)
+    {
+        $totalPrecio = $this->getIgv($precio, $tipo, $producto);
         return $totalPrecio;
     }
 
-    public function getPrecioCalculado($precio,$grupo,$tipo,$estado,$producto){
-        if($estado == 'EXCLUSIVO' || $estado == 'OFERTA'){
-            $total =  $this->getEspecialPrice($precio,$tipo,$producto);
-        }else{
-            $total = $this->getPromedio($precio,$grupo,$tipo,$producto);
+    public function getPrecioCalculado($precio, $grupo, $tipo, $estado, $producto)
+    {
+        if ($estado == 'EXCLUSIVO' || $estado == 'OFERTA') {
+            $total =  $this->getEspecialPrice($precio, $tipo, $producto);
+        } else {
+            $total = $this->getPromedio($precio, $grupo, $tipo, $producto);
         }
 
-         return $total;
+        return $total;
     }
 
-    public function getPrecioTotal($precio,$grupo,$tipo,$estado,$ganancia,$producto){
+    public function getPrecioTotal($precio, $grupo, $tipo, $estado, $ganancia, $producto)
+    {
         $empresa = $this->headerService->obtenerEmpresa();
-        $gananciaValidate = $this->validateMoney($ganancia,$tipo,$producto);
-        $total = $this->getPrecioCalculado($precio,$grupo,$tipo,$estado,$producto) * $this->porcent($empresa->comision) + $gananciaValidate;
+        $gananciaValidate = $this->validateMoney($ganancia, $tipo, $producto);
+        $total = $this->getPrecioCalculado($precio, $grupo, $tipo, $estado, $producto) * $this->porcent($empresa->comision) + $gananciaValidate;
         return $total;
     }
 
@@ -78,7 +82,7 @@ class PreciosService implements PreciosServiceInterface
     {
         // En el sistema, usar_tc_fijo = false (0) significa que se usa el TC Fijo
         // usar_tc_fijo = true (1) significa que se usa el TC SUNAT
-        if(!$producto->usar_tc_fijo){
+        if (!$producto->usar_tc_fijo) {
             if (!empty($producto->tc_fijo) && $producto->tc_fijo > 0) {
                 return $producto->tc_fijo;
             }
@@ -88,17 +92,19 @@ class PreciosService implements PreciosServiceInterface
         return $this->headerService->obtenerCambioDolar(); // SUNAT
     }
 
-    private function validateMoney($precio,$tipo,$producto){
+    private function validateMoney($precio, $tipo, $producto)
+    {
         $tipoCambio = $this->getTipoCambioPorProducto($producto);
 
-        if($tipo == 'SOL'){
+        if ($tipo == 'SOL') {
             return $precio * $tipoCambio;
-        }else{
+        } else {
             return $precio;
         }
     }
 
-    private function porcent($number){
+    private function porcent($number)
+    {
         return 1 + ($number / 100);
     }
 }
