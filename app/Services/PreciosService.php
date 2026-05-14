@@ -77,7 +77,10 @@ class PreciosService implements PreciosServiceInterface
     private function getTipoCambioPorProducto($producto)
     {
         if($producto->usar_tc_fijo){
-            return Calculadora::find(2)->tasaCambio; // FIJO
+            if (!empty($producto->tc_fijo) && $producto->tc_fijo > 0) {
+                return $producto->tc_fijo;
+            }
+            return Calculadora::find(2)->tasaCambio; // FIJO GLOBAL
         }
 
         return $this->headerService->obtenerCambioDolar(); // SUNAT

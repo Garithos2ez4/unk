@@ -39,7 +39,8 @@ class Producto extends Model
                             'videoUrl2',
                             'estadoProductoWeb',
                             'slugProducto',
-                            'usar_tc_fijo'
+                            'usar_tc_fijo',
+                            'tc_fijo'
                             ];
 
     
@@ -58,7 +59,8 @@ class Producto extends Model
         'stockColombia' => 'int',
         'stockProveedor' => 'int',
         'idProveedor' => 'int',
-        'usar_tc_fijo' => 'boolean'
+        'usar_tc_fijo' => 'boolean',
+        'tc_fijo' => 'decimal:2'
     ];
 
     public static function boot()
